@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - Quiz Arbitrage Football</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Écran d'identification -->
+        <div id="loginScreen">
+            <div class="header">
+                <h1>Quiz Arbitrage Football</h1>
+                <p>Testez vos connaissances des règles du football</p>
+            </div>
+            <div class="form-container">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="firstName">Prénom :</label>
+                        <input type="text" id="firstName" name="firstName" required placeholder="Votre prénom">
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Nom :</label>
+                        <input type="text" id="lastName" name="lastName" required placeholder="Votre nom">
+                    </div>
+                    <div class="form-group">
+                        <label for="role">Rôle d'arbitrage :</label>
+                        <select id="role" name="role" required>
+                            <option value="">Sélectionnez votre rôle</option>
+                            <option value="central">Arbitre Central</option>
+                            <option value="assistant">Arbitre Assistant</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="level">Niveau d'arbitrage :</label>
+                        <select id="level" name="level" required>
+                            <option value="">Sélectionnez votre niveau</option>
+                            <option value="D4">D4 - District 4</option>
+                            <option value="D3">D3 - District 3</option>
+                            <option value="D2">D2 - District 2</option>
+                            <option value="D1">D1 - District 1</option>
+                            <option value="R3">R3 - Régional 3</option>
+                            <option value="R2">R2 - Régional 2</option>
+                            <option value="R1">R1 - Régional 1</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Mode de quiz :</label>
+                        <div class="mode-selection">
+                            <div class="mode-card" data-mode="training">
+                                <h3>Mode entraînement</h3>
+                                <p>Réponses affichées immédiatement avec explications</p>
+                            </div>
+                            <div class="mode-card" data-mode="exam">
+                                <h3>Mode examen</h3>
+                                <p>20 secondes par question, correction à la fin</p>
+                            </div>
+                        </div>
+                        <input type="hidden" id="quizMode" name="quizMode" required>
+                    </div>
+                    <button type="submit" class="btn">Commencer le Quiz</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        ATKAN ACADEMY - Tous droits réservés 2025 ®
+    </footer>
+
+    <script>
+        // Gestion de la sélection de mode
+        document.querySelectorAll('.mode-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+                document.getElementById('quizMode').value = this.dataset.mode;
+            });
+        });
+
+        // Gestion de la soumission du formulaire
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const userData = {
+                firstName: document.getElementById('firstName').value.trim(),
+                lastName: document.getElementById('lastName').value.trim(),
+                role: document.getElementById('role').value,
+                level: document.getElementById('level').value,
+                mode: document.getElementById('quizMode').value
+            };
+            
+            if (userData.firstName && userData.lastName && userData.role && userData.level && userData.mode) {
+                // Sauvegarder les données dans le stockage local du navigateur
+                localStorage.setItem('quizUser', JSON.stringify(userData));
+                // Rediriger vers la page du quiz
+                window.location.href = 'quiz.html';
+            } else {
+                alert("Veuillez remplir tous les champs.");
+            }
+        });
+    </script>
+</body>
+</html>
