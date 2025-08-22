@@ -3,8 +3,527 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion - Quiz Arbitrage Football</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Quiz Arbitrage Football</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a, #2c2c2c);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 20px 80px 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            max-width: 700px;
+            width: 100%;
+            overflow: hidden;
+            animation: slideIn 0.8s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a1a1a, #2c2c2c);
+            color: #ffd700;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 3px solid #ffd700;
+        }
+
+        .header::before {
+            content: '⚽';
+            position: absolute;
+            font-size: 100px;
+            opacity: 0.1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: spin 10s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-container {
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #1a1a1a;
+            font-size: 1.1em;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input[type="text"]:focus, select:focus {
+            outline: none;
+            border-color: #ffd700;
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffd700' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 20px;
+            padding-right: 45px;
+        }
+
+        .mode-selection {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .mode-card {
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .mode-card:hover {
+            border-color: #ffd700;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.2);
+        }
+
+        .mode-card.selected {
+            border-color: #ffd700;
+            background: #fff8dc;
+        }
+
+        .mode-card h3 {
+            color: #1a1a1a;
+            margin-bottom: 10px;
+        }
+
+        .mode-card p {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #ffd700, #b8860b);
+            color: #1a1a1a;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .quiz-container {
+            padding: 40px;
+        }
+
+        .user-info {
+            background: linear-gradient(135deg, #ffd700, #fff8dc);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border-left: 5px solid #1a1a1a;
+            color: #1a1a1a;
+        }
+
+        .timer-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .timer {
+            background: #ff4444;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.2em;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .timer.warning {
+            background: #ff8800;
+        }
+
+        .timer.normal {
+            background: #4caf50;
+            animation: none;
+        }
+
+        .question-card {
+            background: linear-gradient(135deg, #f9f9f9, #f0f0f0);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            border: 2px solid #ffd700;
+        }
+
+        .question-number {
+            background: #1a1a1a;
+            color: #ffd700;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+
+        .question-text {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .options {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .option {
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            font-size: 1em;
+            position: relative;
+        }
+
+        .option:hover {
+            border-color: #ffd700;
+            background: #fff8dc;
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            background: #1a1a1a;
+            color: #ffd700;
+            border-color: #ffd700;
+        }
+
+        .option.correct {
+            background: #4caf50;
+            color: white;
+            border-color: #4caf50;
+        }
+
+        .option.incorrect {
+            background: #f44336;
+            color: white;
+            border-color: #f44336;
+        }
+
+        .option .feedback-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2em;
+        }
+
+        .theme-badge {
+            display: inline-block;
+            background: #1a1a1a;
+            color: #ffd700;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            font-weight: bold;
+            border: 1px solid #ffd700;
+        }
+
+        .difficulty-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            margin-left: 10px;
+            font-weight: bold;
+        }
+
+        .difficulty-easy { background: #90EE90; color: #006400; }
+        .difficulty-medium { background: #FFD700; color: #B8860B; }
+        .difficulty-hard { background: #FFB6C1; color: #DC143C; }
+
+        .answer-explanation {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            color: #2e7d32;
+        }
+
+        .navigation {
+            display: flex;
+            gap: 15px;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn.prev {
+            background: #e0e0e0;
+            color: #666;
+        }
+
+        .nav-btn.next, .nav-btn.finish {
+            background: #ffd700;
+            color: #1a1a1a;
+            font-weight: bold;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: conic-gradient(#ffd700 0deg, #ffd700 calc(var(--score) * 3.6deg), #e0e0e0 calc(var(--score) * 3.6deg));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+
+        .score-inner {
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            font-size: 2em;
+            font-weight: bold;
+            color: #1a1a1a;
+            border: 2px solid #ffd700;
+        }
+
+        .weakness-analysis {
+            background: #fff8dc;
+            border: 2px solid #ffd700;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .weakness-analysis h3 {
+            color: #1a1a1a;
+            margin-bottom: 15px;
+        }
+
+        .weakness-item {
+            background: white;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #ff8800;
+        }
+
+        .correction-details {
+            background: #f5f5f5;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .correction-item {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .correction-item.wrong {
+            border-left: 4px solid #f44336;
+        }
+
+        .correction-item h4 {
+            color: #1a1a1a;
+            margin-bottom: 10px;
+        }
+
+        .user-answer {
+            color: #f44336;
+            font-weight: bold;
+        }
+
+        .correct-answer {
+            color: #4caf50;
+            font-weight: bold;
+        }
+
+        .results-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #1a1a1a;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #d0d0d0;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+            }
+            
+            .form-container, .quiz-container {
+                padding: 20px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .mode-selection {
+                grid-template-columns: 1fr;
+            }
+
+            .results-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -20,10 +539,12 @@
                         <label for="firstName">Prénom :</label>
                         <input type="text" id="firstName" name="firstName" required placeholder="Votre prénom">
                     </div>
+                    
                     <div class="form-group">
                         <label for="lastName">Nom :</label>
                         <input type="text" id="lastName" name="lastName" required placeholder="Votre nom">
                     </div>
+                    
                     <div class="form-group">
                         <label for="role">Rôle d'arbitrage :</label>
                         <select id="role" name="role" required>
@@ -32,6 +553,7 @@
                             <option value="assistant">Arbitre Assistant</option>
                         </select>
                     </div>
+
                     <div class="form-group">
                         <label for="level">Niveau d'arbitrage :</label>
                         <select id="level" name="level" required>
@@ -45,6 +567,7 @@
                             <option value="R1">R1 - Régional 1</option>
                         </select>
                     </div>
+
                     <div class="form-group">
                         <label>Mode de quiz :</label>
                         <div class="mode-selection">
@@ -59,47 +582,576 @@
                         </div>
                         <input type="hidden" id="quizMode" name="quizMode" required>
                     </div>
+                    
                     <button type="submit" class="btn">Commencer le Quiz</button>
                 </form>
             </div>
         </div>
+
+        <!-- Écran de quiz -->
+        <div id="quizScreen" class="hidden">
+            <div class="header">
+                <h1>Quiz en cours</h1>
+                <div class="timer-container">
+                    <p id="progressText">Question 1 sur 15</p>
+                    <div id="timerDisplay" class="timer hidden">20s</div>
+                </div>
+            </div>
+            <div class="quiz-container">
+                <div class="user-info">
+                    <strong id="userDisplay"></strong>
+                    <span id="roleDisplay"></span>
+                    <span id="levelDisplay"></span>
+                    <span id="modeDisplay"></span>
+                </div>
+                
+                <div id="questionCard" class="question-card">
+                    <div class="question-number" id="questionNumber">1</div>
+                    <div class="theme-badge" id="themeBadge"></div>
+                    <div class="difficulty-badge" id="difficultyBadge"></div>
+                    <div class="question-text" id="questionText"></div>
+                    <div class="options" id="optionsContainer"></div>
+                    <div id="answerExplanation" class="answer-explanation hidden"></div>
+                </div>
+
+                <div class="navigation">
+                    <button class="nav-btn prev" id="prevBtn" onclick="previousQuestion()" disabled>Précédent</button>
+                    <button class="nav-btn next" id="nextBtn" onclick="nextQuestion()">Suivant</button>
+                    <button class="nav-btn finish hidden" id="finishBtn" onclick="finishQuiz()">Terminer</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Écran de résultats -->
+        <div id="resultScreen" class="hidden">
+            <div class="header">
+                <h1>Résultats du Quiz</h1>
+                <p>Voici votre score</p>
+            </div>
+            <div class="results">
+                <div class="user-info">
+                    <strong id="finalUserDisplay"></strong>
+                    <span id="finalRoleDisplay"></span>
+                    <span id="finalLevelDisplay"></span>
+                    <span id="finalModeDisplay"></span>
+                </div>
+                
+                <div class="score-circle" id="scoreCircle">
+                    <div class="score-inner">
+                        <div id="scorePercentage">0%</div>
+                        <div style="font-size: 0.5em;" id="scoreText">0/15</div>
+                    </div>
+                </div>
+
+                <div id="feedback" style="font-size: 1.2em; margin: 20px 0; color: #2c5530;"></div>
+
+                <div id="weaknessAnalysis" class="weakness-analysis hidden">
+                    <h3>📚 Points à revoir :</h3>
+                    <div id="weaknessList"></div>
+                </div>
+
+                <div id="correctionDetails" class="correction-details hidden">
+                    <h3>❌ Questions avec erreurs :</h3>
+                    <div id="correctionList"></div>
+                </div>
+
+                <div class="results-buttons">
+                    <button class="btn" onclick="newTest()">Faire un autre test</button>
+                    <button class="btn-secondary" onclick="restartQuiz()">⚽ Page d'accueil</button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <footer class="main-footer">
-        ATKAN ACADEMY - Tous droits réservés 2025 ®
+    <!-- Footer -->
+    <footer style="position: fixed; bottom: 0; left: 0; right: 0; background: linear-gradient(135deg, #1a1a1a, #2c2c2c); color: #ffd700; text-align: center; padding: 15px; font-size: 0.9em; font-weight: bold; border-top: 2px solid #ffd700; z-index: 1000;">
+        ATKAN ACADEMY - Tous droits réservés 2025 ® 
     </footer>
 
     <script>
-        // Gestion de la sélection de mode
-        document.querySelectorAll('.mode-card').forEach(card => {
-            card.addEventListener('click', function() {
-                document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
-                this.classList.add('selected');
-                document.getElementById('quizMode').value = this.dataset.mode;
+        // LA BASE DE DONNÉES DES QUESTIONS EST INTÉGRÉE ICI
+        const questionsByRole = {
+            central: [
+                // Loi 1
+                {
+                    "question": "Quelle est la largeur maximale autorisée d'un terrain de football international ?",
+                    "options": ["68 m", "75 m", "90 m", "100 m"],
+                    "answer": "68 m",
+                    "theme": "Loi 1 - Terrain",
+                    "difficulty": "medium",
+                    "explanation": "Pour les matchs internationaux, la largeur est généralement de 68m et la longueur de 105m."
+                },
+                {
+                    "question": "Quelle est la distance entre le point de penalty et la ligne de but ?",
+                    "options": ["9,15 m", "10 m", "11 m", "12 m"],
+                    "answer": "11 m",
+                    "theme": "Loi 1 - Terrain",
+                    "difficulty": "easy",
+                    "explanation": "Le point de penalty est situé à 11 mètres de la ligne de but."
+                },
+                // Loi 2
+                {
+                    "question": "Quel est le poids réglementaire d'un ballon en début de match ?",
+                    "options": ["350-400 g", "410-450 g", "450-500 g", "500-550 g"],
+                    "answer": "410-450 g",
+                    "theme": "Loi 2 - Ballon",
+                    "difficulty": "medium",
+                    "explanation": "Le ballon doit peser entre 410 et 450 grammes au début du match."
+                },
+                {
+                    "question": "Le ballon éclate juste après avoir franchi la ligne de but. Décision ?",
+                    "options": ["But valable", "But refusé, balle à terre", "Corner", "Renvoi de but"],
+                    "answer": "But valable",
+                    "theme": "Loi 2 - Ballon",
+                    "difficulty": "hard",
+                    "explanation": "Le but est valable car le ballon avait déjà franchi la ligne avant d'éclater. Le jeu reprend par un coup d'envoi."
+                },
+                // Loi 3
+                {
+                    "question": "Combien de joueurs minimum une équipe doit-elle avoir pour continuer le match ?",
+                    "options": ["5", "6", "7", "8"],
+                    "answer": "7",
+                    "theme": "Loi 3 - Joueurs",
+                    "difficulty": "easy",
+                    "explanation": "Une équipe ne peut pas commencer ou continuer un match avec moins de 7 joueurs."
+                },
+                {
+                    "question": "Un remplaçant entre sur le terrain sans autorisation de l'arbitre et interfère avec le jeu. Décision ?",
+                    "options": ["Coup franc indirect + avertissement", "Coup franc direct + avertissement", "Arrêt du jeu, exclusion", "Balle à terre"],
+                    "answer": "Coup franc direct + avertissement",
+                    "theme": "Loi 3 - Joueurs",
+                    "difficulty": "medium",
+                    "explanation": "L'entrée sans autorisation d'un remplaçant qui interfère avec le jeu est sanctionnée par un coup franc direct et un avertissement."
+                },
+                // Loi 4
+                {
+                    "question": "Les joueurs peuvent-ils porter des bijoux ?",
+                    "options": ["Oui si scotchés", "Non, jamais", "Oui, si autorisés par le capitaine", "Oui, si cachés sous le maillot"],
+                    "answer": "Non, jamais",
+                    "theme": "Loi 4 - Équipement",
+                    "difficulty": "easy",
+                    "explanation": "Aucun bijou n'est autorisé pendant le match, pour des raisons de sécurité. Ils doivent tous être enlevés."
+                },
+                // Loi 5
+                {
+                    "question": "L'arbitre peut-il revenir sur une décision ?",
+                    "options": ["Non, jamais", "Oui, tant que le jeu n'a pas repris", "Oui, uniquement si les deux capitaines sont d'accord", "Oui, seulement avant la mi-temps"],
+                    "answer": "Oui, tant que le jeu n'a pas repris",
+                    "theme": "Loi 5 - Arbitre",
+                    "difficulty": "medium",
+                    "explanation": "L'arbitre peut modifier sa décision tant que le jeu n'a pas repris ou que le match n'est pas terminé."
+                },
+                 // Loi 9
+                {
+                    "question": "Quand le ballon est-il considéré comme « hors du jeu » ?",
+                    "options": ["Quand il franchit totalement les lignes de but ou de touche, au sol ou en l'air", "Quand la moitié du ballon sort", "Quand il est touché par un spectateur"],
+                    "answer": "Quand il franchit totalement les lignes de but ou de touche, au sol ou en l'air",
+                    "theme": "Loi 9 - Ballon en jeu",
+                    "difficulty": "easy",
+                    "explanation": "Le ballon est hors du jeu uniquement lorsqu'il a entièrement franchi la ligne de but ou la ligne de touche, que ce soit à terre ou en l'air."
+                },
+                {
+                    "question": "Si le ballon heurte l'arbitre et conduit directement à un but, change de possession ou crée une attaque dangereuse, que se passe-t-il ?",
+                    "options": ["On arrête et on reprend par une balle à terre", "On laisse jouer", "Coup franc indirect"],
+                    "answer": "On arrête et on reprend par une balle à terre",
+                    "theme": "Loi 9 - Ballon en jeu",
+                    "difficulty": "hard",
+                    "explanation": "Si le ballon touche l'arbitre et qu'une de ces trois situations se produit, le jeu doit être arrêté et repris par une balle à terre."
+                },
+                // Loi 11
+                {
+                    "question": "Un joueur peut-il être en position de hors-jeu sur un corner ?",
+                    "options": ["Oui", "Non", "Seulement dans la surface", "Selon la position"],
+                    "answer": "Non",
+                    "theme": "Loi 11 - Hors-jeu",
+                    "difficulty": "easy",
+                    "explanation": "Un joueur ne peut pas être en position de hors-jeu directement sur un corner, une rentrée de touche ou un coup de pied de but."
+                },
+                {
+                    "question": "La position de hors-jeu est jugée :",
+                    "options": ["Au moment où le joueur reçoit le ballon", "Au moment où le ballon est joué ou touché par un coéquipier", "Quand le ballon franchit la ligne"],
+                    "answer": "Au moment où le ballon est joué ou touché par un coéquipier",
+                    "theme": "Loi 11 - Hors-jeu",
+                    "difficulty": "medium",
+                    "explanation": "La position de hors-jeu d'un joueur est évaluée au moment précis où le ballon est joué par l'un de ses coéquipiers."
+                },
+                // Loi 12
+                {
+                    "question": "Un défenseur retient volontairement un attaquant qui file au but. Décision ?",
+                    "options": ["Avertissement + coup franc direct", "Expulsion + coup franc direct", "Avertissement + penalty"],
+                    "answer": "Expulsion + coup franc direct",
+                    "theme": "Loi 12 - Fautes",
+                    "difficulty": "medium",
+                    "explanation": "Annihiler une occasion de but manifeste est sanctionné d'une expulsion (carton rouge) et d'un coup franc direct (ou penalty si dans la surface)."
+                },
+                {
+                    "question": "Le gardien prend le ballon des mains après une passe volontaire du pied d'un coéquipier. Décision ?",
+                    "options": ["Coup franc indirect pour l'adversaire", "Coup franc direct", "Rien, on laisse jouer"],
+                    "answer": "Coup franc indirect pour l'adversaire",
+                    "theme": "Loi 12 - Fautes",
+                    "difficulty": "easy",
+                    "explanation": "Il s'agit d'une faute spécifique au gardien, sanctionnée par un coup franc indirect à l'endroit où il a touché le ballon."
+                },
+                // Loi 13
+                {
+                    "question": "Un coup franc indirect est tiré directement dans le but adverse. Le but est-il valable ?",
+                    "options": ["Oui", "Non, renvoi de but", "Non, corner"],
+                    "answer": "Non, renvoi de but",
+                    "theme": "Loi 13 - Coups Francs",
+                    "difficulty": "medium",
+                    "explanation": "Pour qu'un but soit marqué sur coup franc indirect, le ballon doit être touché par un autre joueur avant d'entrer. Sinon, le jeu reprend par un coup de pied de but."
+                },
+                // Loi 14
+                {
+                    "question": "Position du gardien au moment d'un penalty :",
+                    "options": ["Les deux pieds sur la ligne", "Au moins un pied sur ou au-dessus de la ligne", "En avant de la ligne"],
+                    "answer": "Au moins un pied sur ou au-dessus de la ligne",
+                    "theme": "Loi 14 - Penalty",
+                    "difficulty": "medium",
+                    "explanation": "Au moment du tir, le gardien doit avoir au moins une partie d'un pied qui touche ou est au-dessus de la ligne de but."
+                },
+                // Loi 15
+                {
+                    "question": "Peut-on marquer directement un but sur une rentrée de touche ?",
+                    "options": ["Oui contre l'adversaire", "Non, si dans le but adverse → renvoi de but", "Oui contre son propre camp"],
+                    "answer": "Non, si dans le but adverse → renvoi de but",
+                    "theme": "Loi 15 - Rentrée de touche",
+                    "difficulty": "easy",
+                    "explanation": "Un but ne peut pas être marqué directement sur une rentrée de touche. Si le ballon entre dans le but adverse, le jeu reprend par un coup de pied de but."
+                },
+                // Loi 16
+                {
+                    "question": "Le ballon est en jeu lors d'un coup de pied de but quand :",
+                    "options": ["Il franchit la ligne des 5,5 m", "Il sort de la surface de réparation", "Il est frappé et bouge clairement, même dans la surface"],
+                    "answer": "Il est frappé et bouge clairement, même dans la surface",
+                    "theme": "Loi 16 - Coup de pied de but",
+                    "difficulty": "easy",
+                    "explanation": "Depuis les modifications, le ballon est en jeu dès qu'il est botté et a clairement bougé, même s'il reste dans la surface de réparation."
+                },
+                // Loi 17
+                {
+                    "question": "Si un corner est frappé directement dans son propre but, quelle est la décision ?",
+                    "options": ["But contre son camp", "Corner à rejouer", "Corner pour l'adversaire"],
+                    "answer": "Corner pour l'adversaire",
+                    "theme": "Loi 17 - Corner",
+                    "difficulty": "medium",
+                    "explanation": "Un but ne peut être marqué contre son camp directement sur corner. Le jeu reprendra par un corner pour l'équipe adverse."
+                }
+            ],
+            assistant: [
+                {
+                    "question": "L'arbitre assistant doit lever son drapeau pour signaler un hors-jeu :",
+                    "options": ["Dès que le joueur est en position de hors-jeu", "Quand le joueur en position de hors-jeu interfère avec le jeu", "Seulement si l'arbitre le demande"],
+                    "answer": "Quand le joueur en position de hors-jeu interfère avec le jeu",
+                    "theme": "Collaboration",
+                    "difficulty": "medium",
+                    "explanation": "L'assistant ne signale le hors-jeu que lorsque le joueur en position irrégulière participe activement au jeu."
+                },
+                {
+                    "question": "En cas de désaccord avec l'arbitre central sur une décision, l'assistant doit :",
+                    "options": ["Insister sur sa décision", "Se soumettre à la décision de l'arbitre", "Arrêter le jeu pour discuter"],
+                    "answer": "Se soumettre à la décision de l'arbitre",
+                    "theme": "Collaboration",
+                    "difficulty": "easy",
+                    "explanation": "L'arbitre central a toujours le dernier mot. Le rôle de l'assistant est de l'assister, mais la décision finale lui revient."
+                },
+                {
+                    "question": "Pour juger la ligne de hors-jeu, l'arbitre assistant doit se positionner à hauteur :",
+                    "options": ["Du ballon", "De l'avant-dernier défenseur", "Du dernier défenseur"],
+                    "answer": "De l'avant-dernier défenseur",
+                    "theme": "Technique",
+                    "difficulty": "medium",
+                    "explanation": "La position de référence pour juger le hors-jeu est l'avant-dernier défenseur (le gardien étant souvent le dernier)."
+                }
+            ]
+        };
+
+        // Variables globales
+        let currentUser = {};
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let score = 0;
+        let currentQuestions = [];
+        let quizMode = '';
+        let timer = null;
+        let timeLeft = 20;
+        let isAnswerRevealed = false;
+        let wrongAnswers = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Gestion de la sélection de mode
+            document.querySelectorAll('.mode-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
+                    this.classList.add('selected');
+                    document.getElementById('quizMode').value = this.dataset.mode;
+                });
+            });
+
+            // Gestion de l'écran de connexion
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const firstName = document.getElementById('firstName').value.trim();
+                const lastName = document.getElementById('lastName').value.trim();
+                const role = document.getElementById('role').value;
+                const level = document.getElementById('level').value;
+                const mode = document.getElementById('quizMode').value;
+                
+                if (firstName && lastName && role && level && mode) {
+                    currentUser = { firstName, lastName, role, level };
+                    quizMode = mode;
+                    startQuiz();
+                } else {
+                    alert("Veuillez remplir tous les champs et sélectionner un mode.");
+                }
             });
         });
 
-        // Gestion de la soumission du formulaire
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        function startQuiz() {
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('quizScreen').classList.remove('hidden');
             
-            const userData = {
-                firstName: document.getElementById('firstName').value.trim(),
-                lastName: document.getElementById('lastName').value.trim(),
-                role: document.getElementById('role').value,
-                level: document.getElementById('level').value,
-                mode: document.getElementById('quizMode').value
-            };
-            
-            if (userData.firstName && userData.lastName && userData.role && userData.level && userData.mode) {
-                // Sauvegarder les données dans le stockage local du navigateur
-                localStorage.setItem('quizUser', JSON.stringify(userData));
-                // Rediriger vers la page du quiz
-                window.location.href = 'quiz.html';
-            } else {
-                alert("Veuillez remplir tous les champs.");
+            const questionsForRole = questionsByRole[currentUser.role] || [];
+            if(questionsForRole.length === 0){
+                alert("Aucune question n'est disponible pour ce rôle pour le moment.");
+                restartQuiz();
+                return;
             }
-        });
+
+            currentQuestions = [...questionsForRole].sort(() => Math.random() - 0.5).slice(0, 15);
+            
+            document.getElementById('userDisplay').textContent = `${currentUser.firstName} ${currentUser.lastName}`;
+            document.getElementById('roleDisplay').textContent = ` - ${getRoleDisplayName(currentUser.role)}`;
+            document.getElementById('levelDisplay').textContent = ` - Niveau ${currentUser.level}`;
+            document.getElementById('modeDisplay').textContent = ` - Mode ${quizMode === 'training' ? 'Entraînement' : 'Examen'}`;
+            
+            if (quizMode === 'exam') {
+                document.getElementById('timerDisplay').classList.remove('hidden');
+            } else {
+                document.getElementById('timerDisplay').classList.add('hidden');
+            }
+            
+            currentQuestionIndex = 0;
+            userAnswers = new Array(currentQuestions.length).fill(null);
+            score = 0;
+            wrongAnswers = [];
+            
+            displayQuestion();
+        }
+
+        function getRoleDisplayName(role) {
+            return {
+                'central': 'Arbitre Central',
+                'assistant': 'Arbitre Assistant'
+            }[role] || role;
+        }
+
+        function displayQuestion() {
+            if (currentQuestions.length === 0) return;
+            const question = currentQuestions[currentQuestionIndex];
+            isAnswerRevealed = false;
+
+            document.getElementById('progressText').textContent = `Question ${currentQuestionIndex + 1} sur ${currentQuestions.length}`;
+            document.getElementById('questionNumber').textContent = currentQuestionIndex + 1;
+            document.getElementById('themeBadge').textContent = question.theme;
+            
+            const difficultyBadge = document.getElementById('difficultyBadge');
+            difficultyBadge.textContent = question.difficulty;
+            difficultyBadge.className = `difficulty-badge difficulty-${question.difficulty}`;
+            
+            document.getElementById('questionText').textContent = question.question;
+            document.getElementById('answerExplanation').classList.add('hidden');
+            
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option';
+                optionElement.textContent = option;
+                optionElement.addEventListener('click', () => selectOption(optionElement, option));
+                
+                if (userAnswers[currentQuestionIndex] === option) {
+                    optionElement.classList.add('selected');
+                }
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            if (timer) clearInterval(timer);
+            if (quizMode === 'exam') startTimer();
+            
+            updateNavigationButtons();
+        }
+
+        function startTimer() {
+            timeLeft = 20;
+            updateTimerDisplay();
+            timer = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    if (currentQuestionIndex < currentQuestions.length - 1) {
+                        nextQuestion();
+                    } else {
+                        finishQuiz();
+                    }
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const timerElement = document.getElementById('timerDisplay');
+            timerElement.textContent = `${timeLeft}s`;
+            timerElement.className = 'timer'; // Reset
+            if (timeLeft > 10) timerElement.classList.add('normal');
+            else if (timeLeft > 5) timerElement.classList.add('warning');
+        }
+
+        function selectOption(selectedElement, option) {
+            if (isAnswerRevealed && quizMode === 'training') return;
+            
+            document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+            selectedElement.classList.add('selected');
+            userAnswers[currentQuestionIndex] = option;
+            
+            if (quizMode === 'training') {
+                showAnswerFeedback();
+            }
+            if (quizMode === 'exam') {
+                clearInterval(timer);
+            }
+        }
+
+        function showAnswerFeedback() {
+            isAnswerRevealed = true;
+            const question = currentQuestions[currentQuestionIndex];
+            const userAnswer = userAnswers[currentQuestionIndex];
+            
+            document.querySelectorAll('.option').forEach(optionEl => {
+                optionEl.style.pointerEvents = 'none';
+                if (optionEl.textContent === question.answer) {
+                    optionEl.classList.add('correct');
+                    optionEl.innerHTML += ' <span class="feedback-icon">✓</span>';
+                } else if (optionEl.textContent === userAnswer) {
+                    optionEl.classList.add('incorrect');
+                    optionEl.innerHTML += ' <span class="feedback-icon">✗</span>';
+                }
+            });
+            
+            const explanationElement = document.getElementById('answerExplanation');
+            explanationElement.innerHTML = `<strong>Explication :</strong> ${question.explanation}`;
+            explanationElement.classList.remove('hidden');
+        }
+
+        function updateNavigationButtons() {
+            document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
+            const isLastQuestion = currentQuestionIndex === currentQuestions.length - 1;
+            document.getElementById('nextBtn').classList.toggle('hidden', isLastQuestion);
+            document.getElementById('finishBtn').classList.toggle('hidden', !isLastQuestion);
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < currentQuestions.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion();
+            }
+        }
+
+        function finishQuiz() {
+            if (timer) clearInterval(timer);
+            
+            score = 0;
+            wrongAnswers = [];
+            const themeErrors = {};
+            
+            currentQuestions.forEach((question, i) => {
+                if (userAnswers[i] === question.answer) {
+                    score++;
+                } else {
+                    wrongAnswers.push({
+                        ...question,
+                        userAnswer: userAnswers[i] || "Pas de réponse",
+                    });
+                    themeErrors[question.theme] = (themeErrors[question.theme] || 0) + 1;
+                }
+            });
+            
+            showResults(themeErrors);
+        }
+
+        function showResults(themeErrors) {
+            document.getElementById('quizScreen').classList.add('hidden');
+            document.getElementById('resultScreen').classList.remove('hidden');
+            
+            document.getElementById('finalUserDisplay').textContent = `${currentUser.firstName} ${currentUser.lastName}`;
+            document.getElementById('finalRoleDisplay').textContent = ` - ${getRoleDisplayName(currentUser.role)}`;
+            document.getElementById('finalLevelDisplay').textContent = ` - Niveau ${currentUser.level}`;
+            document.getElementById('finalModeDisplay').textContent = ` - Mode ${quizMode === 'training' ? 'Entraînement' : 'Examen'}`;
+            
+            const percentage = Math.round((score / currentQuestions.length) * 100);
+            document.getElementById('scoreCircle').style.setProperty('--score', percentage);
+            document.getElementById('scorePercentage').textContent = `${percentage}%`;
+            document.getElementById('scoreText').textContent = `${score}/${currentQuestions.length}`;
+            
+            let feedback = '';
+            if (percentage >= 90) feedback = '🏆 Excellent ! Vous maîtrisez parfaitement les règles !';
+            else if (percentage >= 70) feedback = '👍 Très bien ! Continuez comme ça !';
+            else if (percentage >= 50) feedback = '🙂 Pas mal ! Il y a encore quelques points à revoir.';
+            else feedback = '📚 Continuez à étudier les règles, vous allez progresser !';
+            document.getElementById('feedback').textContent = feedback;
+            
+            const weaknessList = document.getElementById('weaknessList');
+            weaknessList.innerHTML = '';
+            if (Object.keys(themeErrors).length > 0) {
+                Object.entries(themeErrors).forEach(([theme, errorCount]) => {
+                    weaknessList.innerHTML += `<div class="weakness-item"><strong>${theme}</strong> : ${errorCount} erreur${errorCount > 1 ? 's' : ''}</div>`;
+                });
+                document.getElementById('weaknessAnalysis').classList.remove('hidden');
+            } else {
+                 document.getElementById('weaknessAnalysis').classList.add('hidden');
+            }
+            
+            const correctionList = document.getElementById('correctionList');
+            correctionList.innerHTML = '';
+            if (wrongAnswers.length > 0) {
+                wrongAnswers.forEach(error => {
+                    correctionList.innerHTML += `
+                        <div class="correction-item wrong">
+                            <h4>${error.question}</h4>
+                            <p><strong>Votre réponse :</strong> <span class="user-answer">${error.userAnswer}</span></p>
+                            <p><strong>Bonne réponse :</strong> <span class="correct-answer">${error.answer}</span></p>
+                            <p><strong>Explication :</strong> ${error.explanation}</p>
+                        </div>
+                    `;
+                });
+                document.getElementById('correctionDetails').classList.remove('hidden');
+            } else {
+                document.getElementById('correctionDetails').classList.add('hidden');
+            }
+        }
+
+        function newTest() {
+            document.getElementById('resultScreen').classList.add('hidden');
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
+            document.getElementById('quizMode').value = '';
+        }
+
+        function restartQuiz() {
+            document.getElementById('resultScreen').classList.add('hidden');
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('loginForm').reset();
+            document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
+        }
     </script>
 </body>
 </html>
