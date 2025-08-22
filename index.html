@@ -525,6 +525,15 @@
         }
     </style>
 </head>
+<div id="popupWelcome" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:9999; align-items:center; justify-content:center;">
+    <div style="background:#fff; border-radius:10px; padding:30px; max-width:500px; text-align:center;">
+        <p>Amis arbitres, nous avons conçu une banque de 500 questions pour perfectionner notre maîtrise des Lois du Jeu.</p>
+        <p>Chaque test propose 15 questions, en mode révision ou en mode challenge.</p>
+        <p>Un score et des corrections complètes vous seront communiqués en fin de session.</p>
+        <p>Relevez le défi et rejoignez-nous dans cette dynamique d’amélioration continue !</p>
+        <button onclick="dismissPopup()" class="btn" style="margin-top:20px;">Continuer</button>
+    </div>
+</div>
 <body>
     <div class="container">
         <!-- Écran d'identification -->
@@ -532,10 +541,13 @@
             <div class="header">
                 <h1>Quiz Arbitrage Football</h1>
                 <p>Testez vos connaissances des règles du football</p>
+			
             </div>
             <div class="form-container">
                 <form id="loginForm">
                     <div class="form-group">
+							
+				
                         <label for="firstName">Prénom :</label>
                         <input type="text" id="firstName" name="firstName" required placeholder="Votre prénom">
                     </div>
@@ -669,27 +681,52 @@
     </footer>
 
     <script>
-        // LA BASE DE DONNÉES DES QUESTIONS EST INTÉGRÉE ICI
+        // Questions organisées par rôle d'arbitrage avec toutes les nouvelles questions du document
         const questionsByRole = {
             central: [
-                // Loi 1
+                // Loi 1 : Le terrain de jeu
                 {
                     "question": "Quelle est la largeur maximale autorisée d'un terrain de football international ?",
                     "options": ["68 m", "75 m", "90 m", "100 m"],
                     "answer": "68 m",
                     "theme": "Loi 1 - Terrain",
                     "difficulty": "medium",
-                    "explanation": "Pour les matchs internationaux, la largeur est généralement de 68m et la longueur de 105m."
+                    "explanation": "Pour les matchs internationaux, la largeur maximale est de 68 mètres."
                 },
                 {
-                    "question": "Quelle est la distance entre le point de penalty et la ligne de but ?",
-                    "options": ["9,15 m", "10 m", "11 m", "12 m"],
-                    "answer": "11 m",
+                    "question": "Quelle est la longueur minimale d'un terrain pour un match international ?",
+                    "options": ["90 m", "100 m", "105 m", "110 m"],
+                    "answer": "105 m",
+                    "theme": "Loi 1 - Terrain",
+                    "difficulty": "medium",
+                    "explanation": "Pour les matchs internationaux, la longueur minimale est de 105 mètres."
+                },
+                {
+                    "question": "Quelle est la taille standard d'un but de football ?",
+                    "options": ["7,32 m de large et 2,44 m de haut", "7 m de large et 2,50 m de haut", "8 m de large et 2,40 m de haut", "7,50 m de large et 2,45 m de haut"],
+                    "answer": "7,32 m de large et 2,44 m de haut",
                     "theme": "Loi 1 - Terrain",
                     "difficulty": "easy",
-                    "explanation": "Le point de penalty est situé à 11 mètres de la ligne de but."
+                    "explanation": "Les buts mesurent exactement 7,32 m de largeur et 2,44 m de hauteur."
                 },
-                // Loi 2
+                {
+                    "question": "Le rond central a quel rayon ?",
+                    "options": ["7,32 m", "8 m", "9,15 m", "10 m"],
+                    "answer": "9,15 m",
+                    "theme": "Loi 1 - Terrain",
+                    "difficulty": "easy",
+                    "explanation": "Le cercle central a un rayon de 9,15 mètres."
+                },
+                {
+                    "question": "La surface de réparation mesure :",
+                    "options": ["12 m × 20 m", "16,5 m × 40,3 m", "18 m × 40 m", "20 m × 50 m"],
+                    "answer": "16,5 m × 40,3 m",
+                    "theme": "Loi 1 - Terrain",
+                    "difficulty": "hard",
+                    "explanation": "La surface de réparation mesure 16,5 m de profondeur et 40,3 m de largeur."
+                },
+
+                // Loi 2 : Le ballon
                 {
                     "question": "Quel est le poids réglementaire d'un ballon en début de match ?",
                     "options": ["350-400 g", "410-450 g", "450-500 g", "500-550 g"],
@@ -699,169 +736,340 @@
                     "explanation": "Le ballon doit peser entre 410 et 450 grammes au début du match."
                 },
                 {
-                    "question": "Le ballon éclate juste après avoir franchi la ligne de but. Décision ?",
-                    "options": ["But valable", "But refusé, balle à terre", "Corner", "Renvoi de but"],
-                    "answer": "But valable",
+                    "question": "Quelle est la pression réglementaire du ballon ?",
+                    "options": ["0,6 - 1,1 atm", "1,2 - 1,5 atm", "0,4 - 0,7 atm", "1,0 - 1,4 atm"],
+                    "answer": "0,6 - 1,1 atm",
                     "theme": "Loi 2 - Ballon",
                     "difficulty": "hard",
-                    "explanation": "Le but est valable car le ballon avait déjà franchi la ligne avant d'éclater. Le jeu reprend par un coup d'envoi."
+                    "explanation": "La pression du ballon doit être comprise entre 0,6 et 1,1 atmosphère."
                 },
-                // Loi 3
+                {
+                    "question": "Qui décide quel ballon officiel est utilisé lors du match ?",
+                    "options": ["Le capitaine de l'équipe locale", "L'arbitre", "Le délégué du match", "La fédération organisatrice"],
+                    "answer": "L'arbitre",
+                    "theme": "Loi 2 - Ballon",
+                    "difficulty": "easy",
+                    "explanation": "L'arbitre a l'autorité finale pour choisir le ballon utilisé pendant le match."
+                },
+
+                // Loi 3 : Les joueurs
                 {
                     "question": "Combien de joueurs minimum une équipe doit-elle avoir pour continuer le match ?",
                     "options": ["5", "6", "7", "8"],
                     "answer": "7",
                     "theme": "Loi 3 - Joueurs",
                     "difficulty": "easy",
-                    "explanation": "Une équipe ne peut pas commencer ou continuer un match avec moins de 7 joueurs."
+                    "explanation": "Une équipe ne peut pas continuer avec moins de 7 joueurs sur le terrain."
                 },
                 {
-                    "question": "Un remplaçant entre sur le terrain sans autorisation de l'arbitre et interfère avec le jeu. Décision ?",
-                    "options": ["Coup franc indirect + avertissement", "Coup franc direct + avertissement", "Arrêt du jeu, exclusion", "Balle à terre"],
-                    "answer": "Coup franc direct + avertissement",
+                    "question": "Dans les compétitions officielles FIFA, combien de remplacements sont autorisés (hors prolongation) ?",
+                    "options": ["3", "4", "5", "Illimité"],
+                    "answer": "5",
+                    "theme": "Loi 3 - Joueurs",
+                    "difficulty": "easy",
+                    "explanation": "Depuis 2020, 5 remplacements sont autorisés en compétition officielle."
+                },
+                {
+                    "question": "Un remplaçant entre sur le terrain sans autorisation de l'arbitre. Décision ?",
+                    "options": ["Rien, on continue", "Coup franc direct contre son équipe + avertissement", "Coup franc indirect + avertissement", "Arrêt, exclusion"],
+                    "answer": "Coup franc direct contre son équipe + avertissement",
                     "theme": "Loi 3 - Joueurs",
                     "difficulty": "medium",
-                    "explanation": "L'entrée sans autorisation d'un remplaçant qui interfère avec le jeu est sanctionnée par un coup franc direct et un avertissement."
+                    "explanation": "Entrer sans autorisation est sanctionné par un coup franc direct et un avertissement."
                 },
-                // Loi 4
+
+                // Loi 4 : L'équipement des joueurs
                 {
                     "question": "Les joueurs peuvent-ils porter des bijoux ?",
                     "options": ["Oui si scotchés", "Non, jamais", "Oui, si autorisés par le capitaine", "Oui, si cachés sous le maillot"],
                     "answer": "Non, jamais",
                     "theme": "Loi 4 - Équipement",
                     "difficulty": "easy",
-                    "explanation": "Aucun bijou n'est autorisé pendant le match, pour des raisons de sécurité. Ils doivent tous être enlevés."
+                    "explanation": "Aucun bijou n'est autorisé pendant le match, même recouvert."
                 },
-                // Loi 5
+                {
+                    "question": "Où doivent être portés les protège-tibias ?",
+                    "options": ["Sous les chaussettes", "Sur les chaussettes", "Peu importe", "Collés au short"],
+                    "answer": "Sous les chaussettes",
+                    "theme": "Loi 4 - Équipement",
+                    "difficulty": "easy",
+                    "explanation": "Les protège-tibias doivent obligatoirement être portés sous les chaussettes."
+                },
+
+                // Loi 5 : L'arbitre
+                {
+                    "question": "Quand l'autorité de l'arbitre commence-t-elle ?",
+                    "options": ["Au coup d'envoi", "Dès l'arrivée au stade", "À la présentation des équipes", "Après tirage au sort"],
+                    "answer": "Dès l'arrivée au stade",
+                    "theme": "Loi 5 - Arbitre",
+                    "difficulty": "medium",
+                    "explanation": "L'autorité de l'arbitre commence dès son arrivée sur le site du match."
+                },
                 {
                     "question": "L'arbitre peut-il revenir sur une décision ?",
-                    "options": ["Non, jamais", "Oui, tant que le jeu n'a pas repris", "Oui, uniquement si les deux capitaines sont d'accord", "Oui, seulement avant la mi-temps"],
+                    "options": ["Non, jamais", "Oui, tant que le jeu n'a pas repris", "Oui, uniquement si les deux capitaines sont d'accord", "Oui, seulement avant la pause"],
                     "answer": "Oui, tant que le jeu n'a pas repris",
                     "theme": "Loi 5 - Arbitre",
                     "difficulty": "medium",
                     "explanation": "L'arbitre peut modifier sa décision tant que le jeu n'a pas repris ou que le match n'est pas terminé."
                 },
-                 // Loi 9
+
+                // Loi 6 : Les autres officiels
                 {
-                    "question": "Quand le ballon est-il considéré comme « hors du jeu » ?",
-                    "options": ["Quand il franchit totalement les lignes de but ou de touche, au sol ou en l'air", "Quand la moitié du ballon sort", "Quand il est touché par un spectateur"],
-                    "answer": "Quand il franchit totalement les lignes de but ou de touche, au sol ou en l'air",
-                    "theme": "Loi 9 - Ballon en jeu",
+                    "question": "Qui assiste l'arbitre central pour signaler les hors-jeu et sorties de balle ?",
+                    "options": ["Le délégué", "Les arbitres assistants", "Le 4ᵉ arbitre", "Les capitaines"],
+                    "answer": "Les arbitres assistants",
+                    "theme": "Loi 6 - Officiels",
                     "difficulty": "easy",
-                    "explanation": "Le ballon est hors du jeu uniquement lorsqu'il a entièrement franchi la ligne de but ou la ligne de touche, que ce soit à terre ou en l'air."
+                    "explanation": "Les arbitres assistants aident l'arbitre pour les hors-jeu et les sorties de balle."
+                },
+
+                // Loi 7 : Durée du match
+                {
+                    "question": "Combien de temps dure une rencontre de football réglementaire (hors prolongations) ?",
+                    "options": ["80 minutes (2 × 40 min)", "90 minutes (2 × 45 min)", "100 minutes (2 × 50 min)", "120 minutes (2 × 60 min)"],
+                    "answer": "90 minutes (2 × 45 min)",
+                    "theme": "Loi 7 - Durée",
+                    "difficulty": "easy",
+                    "explanation": "Un match dure 90 minutes, soit deux mi-temps de 45 minutes chacune."
                 },
                 {
-                    "question": "Si le ballon heurte l'arbitre et conduit directement à un but, change de possession ou crée une attaque dangereuse, que se passe-t-il ?",
-                    "options": ["On arrête et on reprend par une balle à terre", "On laisse jouer", "Coup franc indirect"],
-                    "answer": "On arrête et on reprend par une balle à terre",
-                    "theme": "Loi 9 - Ballon en jeu",
-                    "difficulty": "hard",
-                    "explanation": "Si le ballon touche l'arbitre et qu'une de ces trois situations se produit, le jeu doit être arrêté et repris par une balle à terre."
+                    "question": "Quelle est la durée de la pause entre les deux mi-temps ?",
+                    "options": ["Maximum 10 minutes", "Maximum 15 minutes", "Maximum 20 minutes", "Illimitée"],
+                    "answer": "Maximum 15 minutes",
+                    "theme": "Loi 7 - Durée",
+                    "difficulty": "easy",
+                    "explanation": "La pause à la mi-temps ne peut pas excéder 15 minutes."
                 },
-                // Loi 11
+
+                // Loi 8 : Coup d'envoi
+                {
+                    "question": "Un but peut-il être marqué directement sur un coup d'envoi ?",
+                    "options": ["Oui, contre l'adversaire", "Oui, contre son propre camp", "Non", "Oui uniquement en prolongation"],
+                    "answer": "Oui, contre l'adversaire",
+                    "theme": "Loi 8 - Coup d'envoi",
+                    "difficulty": "medium",
+                    "explanation": "On peut marquer directement contre l'adversaire, mais pas contre son camp (corner accordé)."
+                },
+
+                // Loi 11 : Hors-jeu
+                {
+                    "question": "Un joueur en position de hors-jeu reçoit une passe et ne joue pas le ballon, l'arbitre doit-il siffler ?",
+                    "options": ["Oui", "Non", "Seulement s'il interfère avec le jeu", "Toujours"],
+                    "answer": "Seulement s'il interfère avec le jeu",
+                    "theme": "Loi 11 - Hors-jeu",
+                    "difficulty": "medium",
+                    "explanation": "Être en position de hors-jeu n'est pas une faute. Il faut interférer avec le jeu, un adversaire, ou tirer avantage de cette position."
+                },
                 {
                     "question": "Un joueur peut-il être en position de hors-jeu sur un corner ?",
                     "options": ["Oui", "Non", "Seulement dans la surface", "Selon la position"],
                     "answer": "Non",
                     "theme": "Loi 11 - Hors-jeu",
                     "difficulty": "easy",
-                    "explanation": "Un joueur ne peut pas être en position de hors-jeu directement sur un corner, une rentrée de touche ou un coup de pied de but."
+                    "explanation": "Il n'y a pas de hors-jeu sur les corners, tout comme sur les remises en touche et les coups de pied de but."
                 },
+
+                // Loi 12 : Fautes et incorrections
                 {
-                    "question": "La position de hors-jeu est jugée :",
-                    "options": ["Au moment où le joueur reçoit le ballon", "Au moment où le ballon est joué ou touché par un coéquipier", "Quand le ballon franchit la ligne"],
-                    "answer": "Au moment où le ballon est joué ou touché par un coéquipier",
-                    "theme": "Loi 11 - Hors-jeu",
-                    "difficulty": "medium",
-                    "explanation": "La position de hors-jeu d'un joueur est évaluée au moment précis où le ballon est joué par l'un de ses coéquipiers."
-                },
-                // Loi 12
-                {
-                    "question": "Un défenseur retient volontairement un attaquant qui file au but. Décision ?",
-                    "options": ["Avertissement + coup franc direct", "Expulsion + coup franc direct", "Avertissement + penalty"],
-                    "answer": "Expulsion + coup franc direct",
-                    "theme": "Loi 12 - Fautes",
-                    "difficulty": "medium",
-                    "explanation": "Annihiler une occasion de but manifeste est sanctionné d'une expulsion (carton rouge) et d'un coup franc direct (ou penalty si dans la surface)."
-                },
-                {
-                    "question": "Le gardien prend le ballon des mains après une passe volontaire du pied d'un coéquipier. Décision ?",
-                    "options": ["Coup franc indirect pour l'adversaire", "Coup franc direct", "Rien, on laisse jouer"],
-                    "answer": "Coup franc indirect pour l'adversaire",
+                    "question": "Une faute commise par négligence doit être sanctionnée comment ?",
+                    "options": ["Coup franc", "Carton jaune", "Carton rouge", "Avantage"],
+                    "answer": "Coup franc",
                     "theme": "Loi 12 - Fautes",
                     "difficulty": "easy",
-                    "explanation": "Il s'agit d'une faute spécifique au gardien, sanctionnée par un coup franc indirect à l'endroit où il a touché le ballon."
+                    "explanation": "Une faute par négligence est sanctionnée uniquement par un coup franc, sans carton."
                 },
-                // Loi 13
                 {
-                    "question": "Un coup franc indirect est tiré directement dans le but adverse. Le but est-il valable ?",
-                    "options": ["Oui", "Non, renvoi de but", "Non, corner"],
-                    "answer": "Non, renvoi de but",
-                    "theme": "Loi 13 - Coups Francs",
+                    "question": "Un joueur qui conteste systématiquement les décisions de l'arbitre doit recevoir :",
+                    "options": ["Un avertissement", "Un carton rouge", "Une simple réprimande", "Rien"],
+                    "answer": "Un avertissement",
+                    "theme": "Loi 12 - Fautes",
                     "difficulty": "medium",
-                    "explanation": "Pour qu'un but soit marqué sur coup franc indirect, le ballon doit être touché par un autre joueur avant d'entrer. Sinon, le jeu reprend par un coup de pied de but."
+                    "explanation": "La contestation répétée des décisions est sanctionnée par un carton jaune pour comportement antisportif."
                 },
-                // Loi 14
+
+                // Penalty
                 {
-                    "question": "Position du gardien au moment d'un penalty :",
-                    "options": ["Les deux pieds sur la ligne", "Au moins un pied sur ou au-dessus de la ligne", "En avant de la ligne"],
-                    "answer": "Au moins un pied sur ou au-dessus de la ligne",
-                    "theme": "Loi 14 - Penalty",
+                    "question": "Lors d'un penalty, le gardien bouge les deux pieds AVANT la frappe et arrête le ballon. Décision ?",
+                    "options": ["Penalty à retirer", "But accordé", "Corner", "Faute non sanctionnée"],
+                    "answer": "Penalty à retirer",
+                    "theme": "Penalty",
+                    "difficulty": "hard",
+                    "explanation": "Si le gardien ne respecte pas les règles et que cela affecte le résultat, le penalty doit être retiré."
+                },
+                {
+                    "question": "Sur un penalty, tous les joueurs sauf le tireur et le gardien doivent être :",
+                    "options": ["Hors de la surface", "À 9,15m du point de penalty", "Derrière la ligne de penalty", "Hors du cercle central"],
+                    "answer": "Hors de la surface",
+                    "theme": "Penalty",
                     "difficulty": "medium",
-                    "explanation": "Au moment du tir, le gardien doit avoir au moins une partie d'un pied qui touche ou est au-dessus de la ligne de but."
+                    "explanation": "Tous les joueurs sauf le tireur et le gardien doivent être à l'extérieur de la surface de réparation."
                 },
-                // Loi 15
+
+                // Faits de jeu complexes
                 {
-                    "question": "Peut-on marquer directement un but sur une rentrée de touche ?",
-                    "options": ["Oui contre l'adversaire", "Non, si dans le but adverse → renvoi de but", "Oui contre son propre camp"],
-                    "answer": "Non, si dans le but adverse → renvoi de but",
-                    "theme": "Loi 15 - Rentrée de touche",
+                    "question": "Avant un match, on découvre que les filets d'un but sont troués. Que doit faire l'arbitre ?",
+                    "options": ["Annuler le match", "Demander réparation avant le coup d'envoi", "Ignorer si les deux équipes sont d'accord", "Reporter le match"],
+                    "answer": "Demander réparation avant le coup d'envoi",
+                    "theme": "Gestion avant match",
+                    "difficulty": "medium",
+                    "explanation": "L'arbitre doit s'assurer que l'équipement est conforme avant de commencer le match."
+                },
+                {
+                    "question": "Le ballon éclate juste après avoir franchi la ligne de but. Décision ?",
+                    "options": ["But valable", "But refusé, balle à terre", "Corner", "Renvoi de but"],
+                    "answer": "But valable",
+                    "theme": "Loi 2 - Ballon",
+                    "difficulty": "hard",
+                    "explanation": "Le but est valable car le ballon avait déjà franchi la ligne avant d'éclater."
+                },
+                {
+                    "question": "Un joueur sort du terrain sans autorisation pour changer de chaussures. Décision ?",
+                    "options": ["Rien", "Avertissement", "Coup franc indirect", "Autoriser à revenir à la prochaine sortie"],
+                    "answer": "Avertissement",
+                    "theme": "Loi 3 - Joueurs",
+                    "difficulty": "medium",
+                    "explanation": "Sortir du terrain sans autorisation est sanctionné par un avertissement."
+                },
+                {
+                    "question": "Un joueur entre avec une chaîne visible autour du cou. Décision ?",
+                    "options": ["Rien, on continue", "Lui demander de l'enlever avant de jouer", "Carton jaune immédiat", "Autoriser si couverte par scotch"],
+                    "answer": "Lui demander de l'enlever avant de jouer",
+                    "theme": "Loi 4 - Équipement",
                     "difficulty": "easy",
-                    "explanation": "Un but ne peut pas être marqué directement sur une rentrée de touche. Si le ballon entre dans le but adverse, le jeu reprend par un coup de pied de but."
+                    "explanation": "Tous les bijoux doivent être retirés avant de jouer, aucune exception."
                 },
-                // Loi 16
                 {
-                    "question": "Le ballon est en jeu lors d'un coup de pied de but quand :",
-                    "options": ["Il franchit la ligne des 5,5 m", "Il sort de la surface de réparation", "Il est frappé et bouge clairement, même dans la surface"],
-                    "answer": "Il est frappé et bouge clairement, même dans la surface",
-                    "theme": "Loi 16 - Coup de pied de but",
-                    "difficulty": "easy",
-                    "explanation": "Depuis les modifications, le ballon est en jeu dès qu'il est botté et a clairement bougé, même s'il reste dans la surface de réparation."
-                },
-                // Loi 17
-                {
-                    "question": "Si un corner est frappé directement dans son propre but, quelle est la décision ?",
-                    "options": ["But contre son camp", "Corner à rejouer", "Corner pour l'adversaire"],
-                    "answer": "Corner pour l'adversaire",
-                    "theme": "Loi 17 - Corner",
+                    "question": "Un arbitre donne un carton rouge mais sort par erreur un carton jaune. Que faire ?",
+                    "options": ["Rien, la première décision reste", "Il peut corriger si le jeu n'a pas repris", "Demander aux capitaines de choisir", "Reprendre par balle à terre"],
+                    "answer": "Il peut corriger si le jeu n'a pas repris",
+                    "theme": "Loi 5 - Arbitre",
                     "difficulty": "medium",
-                    "explanation": "Un but ne peut être marqué contre son camp directement sur corner. Le jeu reprendra par un corner pour l'équipe adverse."
+                    "explanation": "L'arbitre peut corriger ses décisions tant que le jeu n'a pas repris."
                 }
             ],
+            
             assistant: [
+                // Collaboration avec l'arbitre central
                 {
                     "question": "L'arbitre assistant doit lever son drapeau pour signaler un hors-jeu :",
-                    "options": ["Dès que le joueur est en position de hors-jeu", "Quand le joueur en position de hors-jeu interfère avec le jeu", "Seulement si l'arbitre le demande"],
-                    "answer": "Quand le joueur en position de hors-jeu interfère avec le jeu",
+                    "options": ["Dès que le joueur est en position de hors-jeu", "Quand le joueur touche le ballon", "Quand il interfère avec le jeu", "Jamais"],
+                    "answer": "Quand il interfère avec le jeu",
                     "theme": "Collaboration",
                     "difficulty": "medium",
-                    "explanation": "L'assistant ne signale le hors-jeu que lorsque le joueur en position irrégulière participe activement au jeu."
+                    "explanation": "L'assistant ne signale le hors-jeu que lorsque le joueur en position irrégulière interfère effectivement avec le jeu."
                 },
                 {
-                    "question": "En cas de désaccord avec l'arbitre central sur une décision, l'assistant doit :",
-                    "options": ["Insister sur sa décision", "Se soumettre à la décision de l'arbitre", "Arrêter le jeu pour discuter"],
+                    "question": "En cas de désaccord avec l'arbitre central, l'assistant doit :",
+                    "options": ["Insister sur sa décision", "Se soumettre à la décision de l'arbitre", "Demander l'avis du 4ème arbitre", "Arrêter le jeu"],
                     "answer": "Se soumettre à la décision de l'arbitre",
                     "theme": "Collaboration",
                     "difficulty": "easy",
-                    "explanation": "L'arbitre central a toujours le dernier mot. Le rôle de l'assistant est de l'assister, mais la décision finale lui revient."
+                    "explanation": "L'arbitre central prend toujours la décision finale, même après consultation de ses assistants."
                 },
                 {
-                    "question": "Pour juger la ligne de hors-jeu, l'arbitre assistant doit se positionner à hauteur :",
-                    "options": ["Du ballon", "De l'avant-dernier défenseur", "Du dernier défenseur"],
-                    "answer": "De l'avant-dernier défenseur",
-                    "theme": "Technique",
+                    "question": "L'arbitre assistant peut-il signaler une faute grave que l'arbitre n'a pas vue ?",
+                    "options": ["Oui, toujours", "Non, jamais", "Seulement les cartons rouges", "Seulement dans sa zone"],
+                    "answer": "Oui, toujours",
+                    "theme": "Collaboration",
                     "difficulty": "medium",
-                    "explanation": "La position de référence pour juger le hors-jeu est l'avant-dernier défenseur (le gardien étant souvent le dernier)."
+                    "explanation": "L'assistant peut et doit signaler toute faute grave, comportement violent ou incident que l'arbitre n'a pas vu."
+                },
+                {
+                    "question": "Pour signaler une faute, l'arbitre assistant doit :",
+                    "options": ["Lever le drapeau", "Attendre le contact visuel", "Crier", "Utiliser le bip"],
+                    "answer": "Attendre le contact visuel",
+                    "theme": "Collaboration",
+                    "difficulty": "hard",
+                    "explanation": "L'assistant doit d'abord établir un contact visuel avec l'arbitre avant de faire son signal."
+                },
+                {
+                    "question": "L'arbitre assistant doit se placer :",
+                    "options": ["Toujours sur la ligne de touche", "À hauteur du dernier défenseur", "À hauteur de l'avant-dernier défenseur", "Au centre du terrain"],
+                    "answer": "À hauteur de l'avant-dernier défenseur",
+                    "theme": "Collaboration",
+                    "difficulty": "medium",
+                    "explanation": "L'assistant se positionne à hauteur de l'avant-dernier défenseur pour juger correctement les hors-jeu."
+                },
+
+                // Remises en jeu
+                {
+                    "question": "Pour une remise en touche, l'arbitre assistant doit indiquer :",
+                    "options": ["Seulement la direction", "L'équipe qui remet en jeu", "Le lieu exact", "Tout ce qui précède"],
+                    "answer": "Tout ce qui précède",
+                    "theme": "Remises en jeu",
+                    "difficulty": "easy",
+                    "explanation": "L'assistant indique la direction, l'équipe qui bénéficie de la remise et aide à positionner correctement la remise en touche."
+                },
+                {
+                    "question": "Le ballon sort en corner, l'assistant doit :",
+                    "options": ["Lever le drapeau vers le corner", "Pointer vers le but", "Ne rien faire", "Regarder l'arbitre"],
+                    "answer": "Lever le drapeau vers le corner",
+                    "theme": "Remises en jeu",
+                    "difficulty": "easy",
+                    "explanation": "L'assistant signale le corner en levant le drapeau en direction de l'arc de cercle du corner approprié."
+                },
+                {
+                    "question": "Sur un coup de pied de but, l'assistant vérifie :",
+                    "options": ["Que le ballon sort de la surface", "La position des joueurs", "Les deux", "Rien"],
+                    "answer": "Les deux",
+                    "theme": "Remises en jeu",
+                    "difficulty": "medium",
+                    "explanation": "L'assistant s'assure que le ballon quitte la surface de réparation et que les joueurs respectent les règles."
+                },
+
+                // Situations spécifiques
+                {
+                    "question": "Un arbitre assistant signale une sortie de but mais l'arbitre central accorde corner. Décision finale ?",
+                    "options": ["Assistant", "Arbitre central", "4ème arbitre", "Délégué"],
+                    "answer": "Arbitre central",
+                    "theme": "Collaboration",
+                    "difficulty": "medium",
+                    "explanation": "L'arbitre central a toujours l'autorité finale sur toutes les décisions du match."
+                },
+                {
+                    "question": "Un arbitre assistant signale un hors-jeu, mais l'attaque se poursuit et un but est marqué. Décision ?",
+                    "options": ["Hors-jeu confirmé", "But validé si l'arbitre estime que le joueur n'était pas fautif", "Corner", "Coup franc indirect"],
+                    "answer": "But validé si l'arbitre estime que le joueur n'était pas fautif",
+                    "theme": "Collaboration",
+                    "difficulty": "hard",
+                    "explanation": "L'arbitre central peut ignorer le signal de l'assistant s'il juge que le hors-jeu n'était pas correct."
+                },
+                {
+                    "question": "L'arbitre assistant lève son drapeau mais l'arbitre central ne le voit pas. Décision ?",
+                    "options": ["Assistant décide", "Jeu continue", "4ème arbitre arrête le jeu", "VAR arrête le jeu"],
+                    "answer": "Jeu continue",
+                    "theme": "Collaboration",
+                    "difficulty": "medium",
+                    "explanation": "Si l'arbitre central ne voit pas le signal, le jeu continue normalement."
+                },
+
+                // Techniques de signalisation
+                {
+                    "question": "Les arbitres assistants lèvent leur drapeau verticalement pour :",
+                    "options": ["Une touche", "Un corner", "Un hors-jeu", "Une faute"],
+                    "answer": "Un hors-jeu",
+                    "theme": "Signalisation",
+                    "difficulty": "easy",
+                    "explanation": "Le drapeau vertical signale un hors-jeu."
+                },
+                {
+                    "question": "Un arbitre assistant se trompe et signale hors-jeu sur une passe en retrait au gardien. L'arbitre siffle. Décision ?",
+                    "options": ["Le jeu reprend par coup franc indirect", "L'arbitre peut reconnaître l'erreur et donner balle à terre", "On rejoue l'action", "Corner"],
+                    "answer": "L'arbitre peut reconnaître l'erreur et donner balle à terre",
+                    "theme": "Collaboration",
+                    "difficulty": "hard",
+                    "explanation": "L'arbitre peut corriger une erreur manifeste en donnant une balle à terre pour reprendre équitablement."
+                },
+
+                // Gestion des situations difficiles
+                {
+                    "question": "En cas de panne de communication électronique entre arbitres :",
+                    "options": ["Le match est arrêté", "On continue en utilisant les signaux visuels (drapeaux)", "L'arbitre demande au public de juger", "On rejoue le match"],
+                    "answer": "On continue en utilisant les signaux visuels (drapeaux)",
+                    "theme": "Collaboration",
+                    "difficulty": "medium",
+                    "explanation": "Les signaux visuels traditionnels restent le moyen principal de communication entre arbitres."
                 }
             ]
         };
@@ -875,94 +1083,106 @@
         let quizMode = '';
         let timer = null;
         let timeLeft = 20;
+        let questionStartTime = 0;
         let isAnswerRevealed = false;
         let wrongAnswers = [];
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // Gestion de la sélection de mode
-            document.querySelectorAll('.mode-card').forEach(card => {
-                card.addEventListener('click', function() {
-                    document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
-                    this.classList.add('selected');
-                    document.getElementById('quizMode').value = this.dataset.mode;
-                });
+        // Gestion de la sélection de mode
+        document.querySelectorAll('.mode-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+                document.getElementById('quizMode').value = this.dataset.mode;
             });
+        });
 
-            // Gestion de l'écran de connexion
-            document.getElementById('loginForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const firstName = document.getElementById('firstName').value.trim();
-                const lastName = document.getElementById('lastName').value.trim();
-                const role = document.getElementById('role').value;
-                const level = document.getElementById('level').value;
-                const mode = document.getElementById('quizMode').value;
-                
-                if (firstName && lastName && role && level && mode) {
-                    currentUser = { firstName, lastName, role, level };
-                    quizMode = mode;
-                    startQuiz();
-                } else {
-                    alert("Veuillez remplir tous les champs et sélectionner un mode.");
-                }
-            });
+        // Gestion de l'écran de connexion
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const role = document.getElementById('role').value;
+            const level = document.getElementById('level').value;
+            const mode = document.getElementById('quizMode').value;
+            
+            if (firstName && lastName && role && level && mode) {
+                currentUser = { firstName, lastName, role, level };
+                quizMode = mode;
+                startQuiz();
+            }
         });
 
         function startQuiz() {
             document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('quizScreen').classList.remove('hidden');
             
-            const questionsForRole = questionsByRole[currentUser.role] || [];
-            if(questionsForRole.length === 0){
-                alert("Aucune question n'est disponible pour ce rôle pour le moment.");
-                restartQuiz();
-                return;
-            }
-
-            currentQuestions = [...questionsForRole].sort(() => Math.random() - 0.5).slice(0, 15);
+            // Sélectionner les questions selon le rôle
+            currentQuestions = [...questionsByRole[currentUser.role]] || [];
             
+            // Mélanger les questions
+            currentQuestions = currentQuestions.sort(() => Math.random() - 0.5);
+            
+            // Prendre seulement 15 questions
+            currentQuestions = currentQuestions.slice(0, 15);
+            
+            // Afficher les infos utilisateur
             document.getElementById('userDisplay').textContent = `${currentUser.firstName} ${currentUser.lastName}`;
             document.getElementById('roleDisplay').textContent = ` - ${getRoleDisplayName(currentUser.role)}`;
             document.getElementById('levelDisplay').textContent = ` - Niveau ${currentUser.level}`;
             document.getElementById('modeDisplay').textContent = ` - Mode ${quizMode === 'training' ? 'Entraînement' : 'Examen'}`;
             
+            // Afficher/masquer le timer selon le mode
             if (quizMode === 'exam') {
                 document.getElementById('timerDisplay').classList.remove('hidden');
             } else {
                 document.getElementById('timerDisplay').classList.add('hidden');
             }
             
+            // Réinitialiser les variables
             currentQuestionIndex = 0;
-            userAnswers = new Array(currentQuestions.length).fill(null);
+            userAnswers = [];
             score = 0;
             wrongAnswers = [];
+            isAnswerRevealed = false;
             
             displayQuestion();
         }
 
         function getRoleDisplayName(role) {
-            return {
+            const roleNames = {
                 'central': 'Arbitre Central',
                 'assistant': 'Arbitre Assistant'
-            }[role] || role;
+            };
+            return roleNames[role] || role;
         }
 
         function displayQuestion() {
-            if (currentQuestions.length === 0) return;
+            if (currentQuestions.length === 0) {
+                alert('Aucune question disponible pour ce rôle.');
+                return;
+            }
+
             const question = currentQuestions[currentQuestionIndex];
             isAnswerRevealed = false;
-
+            
+            // Mettre à jour le progress
             document.getElementById('progressText').textContent = `Question ${currentQuestionIndex + 1} sur ${currentQuestions.length}`;
             document.getElementById('questionNumber').textContent = currentQuestionIndex + 1;
-            document.getElementById('themeBadge').textContent = question.theme;
             
+            // Afficher le thème et la difficulté
+            document.getElementById('themeBadge').textContent = question.theme;
             const difficultyBadge = document.getElementById('difficultyBadge');
             difficultyBadge.textContent = question.difficulty;
             difficultyBadge.className = `difficulty-badge difficulty-${question.difficulty}`;
             
+            // Afficher la question
             document.getElementById('questionText').textContent = question.question;
+            
+            // Masquer l'explication
             document.getElementById('answerExplanation').classList.add('hidden');
             
+            // Créer les options
             const optionsContainer = document.getElementById('optionsContainer');
             optionsContainer.innerHTML = '';
             
@@ -970,33 +1190,47 @@
                 const optionElement = document.createElement('div');
                 optionElement.className = 'option';
                 optionElement.textContent = option;
-                optionElement.addEventListener('click', () => selectOption(optionElement, option));
+                optionElement.addEventListener('click', () => selectOption(index, option));
                 
+                // Restaurer la sélection si elle existe
                 if (userAnswers[currentQuestionIndex] === option) {
                     optionElement.classList.add('selected');
                 }
+                
                 optionsContainer.appendChild(optionElement);
             });
             
-            if (timer) clearInterval(timer);
-            if (quizMode === 'exam') startTimer();
+            // Démarrer le timer en mode examen
+            if (quizMode === 'exam') {
+                startTimer();
+            }
             
+            // Gérer les boutons de navigation
             updateNavigationButtons();
         }
 
         function startTimer() {
             timeLeft = 20;
+            questionStartTime = Date.now();
             updateTimerDisplay();
+            
             timer = setInterval(() => {
                 timeLeft--;
                 updateTimerDisplay();
+                
                 if (timeLeft <= 0) {
                     clearInterval(timer);
-                    if (currentQuestionIndex < currentQuestions.length - 1) {
-                        nextQuestion();
-                    } else {
-                        finishQuiz();
+                    // Pas de réponse sélectionnée, passer à la question suivante
+                    if (!userAnswers[currentQuestionIndex]) {
+                        userAnswers[currentQuestionIndex] = null;
                     }
+                    setTimeout(() => {
+                        if (currentQuestionIndex < currentQuestions.length - 1) {
+                            nextQuestion();
+                        } else {
+                            finishQuiz();
+                        }
+                    }, 1000);
                 }
             }, 1000);
         }
@@ -1004,56 +1238,95 @@
         function updateTimerDisplay() {
             const timerElement = document.getElementById('timerDisplay');
             timerElement.textContent = `${timeLeft}s`;
-            timerElement.className = 'timer'; // Reset
-            if (timeLeft > 10) timerElement.classList.add('normal');
-            else if (timeLeft > 5) timerElement.classList.add('warning');
+            
+            if (timeLeft <= 5) {
+                timerElement.className = 'timer';
+            } else if (timeLeft <= 10) {
+                timerElement.className = 'timer warning';
+            } else {
+                timerElement.className = 'timer normal';
+            }
         }
 
-        function selectOption(selectedElement, option) {
-            if (isAnswerRevealed && quizMode === 'training') return;
+        function selectOption(index, option) {
+            if (isAnswerRevealed && quizMode === 'training') {
+                return; // Empêcher la sélection après révélation de la réponse
+            }
             
-            document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
-            selectedElement.classList.add('selected');
+            // Désélectionner toutes les options
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Sélectionner l'option cliquée
+            document.querySelectorAll('.option')[index].classList.add('selected');
+            
+            // Sauvegarder la réponse
             userAnswers[currentQuestionIndex] = option;
             
+            // En mode entraînement, afficher immédiatement la correction
             if (quizMode === 'training') {
                 showAnswerFeedback();
             }
-            if (quizMode === 'exam') {
+            
+            // En mode examen, arrêter le timer
+            if (quizMode === 'exam' && timer) {
                 clearInterval(timer);
             }
         }
 
         function showAnswerFeedback() {
-            isAnswerRevealed = true;
             const question = currentQuestions[currentQuestionIndex];
             const userAnswer = userAnswers[currentQuestionIndex];
+            const correctAnswer = question.answer;
             
-            document.querySelectorAll('.option').forEach(optionEl => {
-                optionEl.style.pointerEvents = 'none';
-                if (optionEl.textContent === question.answer) {
-                    optionEl.classList.add('correct');
-                    optionEl.innerHTML += ' <span class="feedback-icon">✓</span>';
-                } else if (optionEl.textContent === userAnswer) {
-                    optionEl.classList.add('incorrect');
-                    optionEl.innerHTML += ' <span class="feedback-icon">✗</span>';
+            isAnswerRevealed = true;
+            
+            // Colorer les options
+            document.querySelectorAll('.option').forEach(option => {
+                const optionText = option.textContent;
+                
+                if (optionText === correctAnswer) {
+                    option.classList.add('correct');
+                    option.innerHTML += ' <span class="feedback-icon">✓</span>';
+                } else if (optionText === userAnswer && userAnswer !== correctAnswer) {
+                    option.classList.add('incorrect');
+                    option.innerHTML += ' <span class="feedback-icon">✗</span>';
                 }
+                
+                // Désactiver le clic
+                option.style.pointerEvents = 'none';
             });
             
+            // Afficher l'explication
             const explanationElement = document.getElementById('answerExplanation');
             explanationElement.innerHTML = `<strong>Explication :</strong> ${question.explanation}`;
             explanationElement.classList.remove('hidden');
         }
 
         function updateNavigationButtons() {
-            document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
-            const isLastQuestion = currentQuestionIndex === currentQuestions.length - 1;
-            document.getElementById('nextBtn').classList.toggle('hidden', isLastQuestion);
-            document.getElementById('finishBtn').classList.toggle('hidden', !isLastQuestion);
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const finishBtn = document.getElementById('finishBtn');
+            
+            // Bouton précédent
+            prevBtn.disabled = currentQuestionIndex === 0;
+            
+            // Boutons suivant/terminer
+            if (currentQuestionIndex === currentQuestions.length - 1) {
+                nextBtn.classList.add('hidden');
+                finishBtn.classList.remove('hidden');
+            } else {
+                nextBtn.classList.remove('hidden');
+                finishBtn.classList.add('hidden');
+            }
         }
 
         function previousQuestion() {
             if (currentQuestionIndex > 0) {
+                if (timer) {
+                    clearInterval(timer);
+                }
                 currentQuestionIndex--;
                 displayQuestion();
             }
@@ -1061,29 +1334,47 @@
 
         function nextQuestion() {
             if (currentQuestionIndex < currentQuestions.length - 1) {
+                if (timer) {
+                    clearInterval(timer);
+                }
                 currentQuestionIndex++;
                 displayQuestion();
             }
         }
 
         function finishQuiz() {
-            if (timer) clearInterval(timer);
+            if (timer) {
+                clearInterval(timer);
+            }
             
+            // Calculer le score et analyser les erreurs
             score = 0;
             wrongAnswers = [];
             const themeErrors = {};
             
-            currentQuestions.forEach((question, i) => {
-                if (userAnswers[i] === question.answer) {
+            for (let i = 0; i < currentQuestions.length; i++) {
+                const question = currentQuestions[i];
+                const userAnswer = userAnswers[i];
+                const correctAnswer = question.answer;
+                
+                if (userAnswer === correctAnswer) {
                     score++;
                 } else {
                     wrongAnswers.push({
-                        ...question,
-                        userAnswer: userAnswers[i] || "Pas de réponse",
+                        question: question.question,
+                        userAnswer: userAnswer || "Pas de réponse",
+                        correctAnswer: correctAnswer,
+                        explanation: question.explanation,
+                        theme: question.theme
                     });
-                    themeErrors[question.theme] = (themeErrors[question.theme] || 0) + 1;
+                    
+                    // Compter les erreurs par thème
+                    if (!themeErrors[question.theme]) {
+                        themeErrors[question.theme] = 0;
+                    }
+                    themeErrors[question.theme]++;
                 }
-            });
+            }
             
             showResults(themeErrors);
         }
@@ -1092,56 +1383,86 @@
             document.getElementById('quizScreen').classList.add('hidden');
             document.getElementById('resultScreen').classList.remove('hidden');
             
+            // Afficher les infos utilisateur
             document.getElementById('finalUserDisplay').textContent = `${currentUser.firstName} ${currentUser.lastName}`;
             document.getElementById('finalRoleDisplay').textContent = ` - ${getRoleDisplayName(currentUser.role)}`;
             document.getElementById('finalLevelDisplay').textContent = ` - Niveau ${currentUser.level}`;
             document.getElementById('finalModeDisplay').textContent = ` - Mode ${quizMode === 'training' ? 'Entraînement' : 'Examen'}`;
             
+            // Calculer et afficher le pourcentage
             const percentage = Math.round((score / currentQuestions.length) * 100);
-            document.getElementById('scoreCircle').style.setProperty('--score', percentage);
+            
+            // Animer le cercle de score
+            const scoreCircle = document.getElementById('scoreCircle');
+            scoreCircle.style.setProperty('--score', percentage);
+            
             document.getElementById('scorePercentage').textContent = `${percentage}%`;
             document.getElementById('scoreText').textContent = `${score}/${currentQuestions.length}`;
             
+            // Message de feedback
             let feedback = '';
-            if (percentage >= 90) feedback = '🏆 Excellent ! Vous maîtrisez parfaitement les règles !';
-            else if (percentage >= 70) feedback = '👍 Très bien ! Continuez comme ça !';
-            else if (percentage >= 50) feedback = '🙂 Pas mal ! Il y a encore quelques points à revoir.';
-            else feedback = '📚 Continuez à étudier les règles, vous allez progresser !';
-            document.getElementById('feedback').textContent = feedback;
-            
-            const weaknessList = document.getElementById('weaknessList');
-            weaknessList.innerHTML = '';
-            if (Object.keys(themeErrors).length > 0) {
-                Object.entries(themeErrors).forEach(([theme, errorCount]) => {
-                    weaknessList.innerHTML += `<div class="weakness-item"><strong>${theme}</strong> : ${errorCount} erreur${errorCount > 1 ? 's' : ''}</div>`;
-                });
-                document.getElementById('weaknessAnalysis').classList.remove('hidden');
+            if (percentage >= 90) {
+                feedback = '🏆 Excellent ! Vous maîtrisez parfaitement les règles !';
+            } else if (percentage >= 70) {
+                feedback = ' Très bien ! Continuez comme ça !';
+            } else if (percentage >= 50) {
+                feedback = ' Pas mal ! Il y a encore quelques points à revoir.';
             } else {
-                 document.getElementById('weaknessAnalysis').classList.add('hidden');
+                feedback = ' Continuez à étudier les règles, vous allez progresser !';
             }
             
-            const correctionList = document.getElementById('correctionList');
-            correctionList.innerHTML = '';
-            if (wrongAnswers.length > 0) {
-                wrongAnswers.forEach(error => {
-                    correctionList.innerHTML += `
-                        <div class="correction-item wrong">
-                            <h4>${error.question}</h4>
-                            <p><strong>Votre réponse :</strong> <span class="user-answer">${error.userAnswer}</span></p>
-                            <p><strong>Bonne réponse :</strong> <span class="correct-answer">${error.answer}</span></p>
-                            <p><strong>Explication :</strong> ${error.explanation}</p>
-                        </div>
-                    `;
+            document.getElementById('feedback').textContent = feedback;
+            
+            // Afficher l'analyse des faiblesses
+            if (Object.keys(themeErrors).length > 0) {
+                const weaknessElement = document.getElementById('weaknessAnalysis');
+                const weaknessList = document.getElementById('weaknessList');
+                
+                weaknessList.innerHTML = '';
+                Object.entries(themeErrors).forEach(([theme, errorCount]) => {
+                    const weaknessItem = document.createElement('div');
+                    weaknessItem.className = 'weakness-item';
+                    weaknessItem.innerHTML = `<strong>${theme}</strong> : ${errorCount} erreur${errorCount > 1 ? 's' : ''} à revoir`;
+                    weaknessList.appendChild(weaknessItem);
                 });
-                document.getElementById('correctionDetails').classList.remove('hidden');
-            } else {
-                document.getElementById('correctionDetails').classList.add('hidden');
+                
+                weaknessElement.classList.remove('hidden');
+            }
+            
+            // Afficher les corrections détaillées en mode examen ou si il y a des erreurs
+            if (wrongAnswers.length > 0 && (quizMode === 'exam' || quizMode === 'training')) {
+                const correctionElement = document.getElementById('correctionDetails');
+                const correctionList = document.getElementById('correctionList');
+                
+                correctionList.innerHTML = '';
+                wrongAnswers.forEach(error => {
+                    const correctionItem = document.createElement('div');
+                    correctionItem.className = 'correction-item wrong';
+                    correctionItem.innerHTML = `
+                        <h4>${error.question}</h4>
+                        <p><strong>Votre réponse :</strong> <span class="user-answer">${error.userAnswer}</span></p>
+                        <p><strong>Bonne réponse :</strong> <span class="correct-answer">${error.correctAnswer}</span></p>
+                        <p><strong>Explication :</strong> ${error.explanation}</p>
+                    `;
+                    correctionList.appendChild(correctionItem);
+                });
+                
+                correctionElement.classList.remove('hidden');
             }
         }
 
         function newTest() {
+            // Remettre à zéro pour faire un nouveau test
             document.getElementById('resultScreen').classList.add('hidden');
             document.getElementById('loginScreen').classList.remove('hidden');
+            
+            // Réinitialiser le formulaire mais garder les infos utilisateur
+            document.getElementById('firstName').value = currentUser.firstName;
+            document.getElementById('lastName').value = currentUser.lastName;
+            document.getElementById('role').value = currentUser.role;
+            document.getElementById('level').value = currentUser.level;
+            
+            // Désélectionner le mode
             document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
             document.getElementById('quizMode').value = '';
         }
@@ -1149,9 +1470,58 @@
         function restartQuiz() {
             document.getElementById('resultScreen').classList.add('hidden');
             document.getElementById('loginScreen').classList.remove('hidden');
+            
+            // Réinitialiser complètement le formulaire
             document.getElementById('loginForm').reset();
             document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
         }
     </script>
+	<!-- POPUP HTML -->
+<div id="popup" style="
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #000;
+    border: 4px solid gold;
+    color: white;
+    padding: 30px;
+    max-width: 500px;
+    width: 90%;
+    z-index: 1000;
+    text-align: center;
+    font-weight: bold;
+    box-shadow: 0 0 15px gold;
+    border-radius: 10px;
+    display: none;
+">
+    Collègues arbitres, une base de 500 questions est à votre disposition pour renforcer nos connaissances.<br><br>
+    Chaque quiz comporte 15 questions, à choisir en mode entrainement avec des explications ou en mode examen.<br><br>
+    En fin de test, vous verrez votre pourcentage de réussite ainsi que les explications pour apprendre de vos erreurs.<br><br>
+    🎯 À vous de jouer : tentez le quiz et mesurez vos progrès !<br><br>
+    <button onclick="closePopup()" style="
+        margin-top: 10px;
+        padding: 10px 20px;
+        background-color: gold;
+        border: none;
+        color: black;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius: 5px;
+    ">Fermer</button>
+</div>
+
+<script>
+    // Fonction pour afficher le popup au chargement de la page
+    window.onload = function() {
+        document.getElementById("popup").style.display = "block";
+    };
+
+    // Fonction pour fermer le popup
+    function closePopup() {
+        document.getElementById("popup").style.display = "none";
+    }
+</script>
+
 </body>
 </html>
