@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz en cours - Arbitrage Football</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Lien pour changer d'utilisateur -->
+        <div class="user-change-container">
+            <a href="index.html" class="change-user-link">Changer d'utilisateur</a>
+        </div>
+
+        <!-- Écran de quiz -->
+        <div id="quizScreen" class="hidden">
+            <div class="header">
+                <h1>Quiz en cours</h1>
+                <div class="timer-container">
+                    <p id="progressText">Question 1 sur 15</p>
+                    <div id="timerDisplay" class="timer hidden">20s</div>
+                </div>
+            </div>
+            <div class="quiz-container">
+                <div class="user-info">
+                    <strong id="userDisplay"></strong>
+                    <span id="roleDisplay"></span>
+                    <span id="levelDisplay"></span>
+                    <span id="modeDisplay"></span>
+                </div>
+                
+                <div id="questionCard" class="question-card">
+                    <div class="question-number" id="questionNumber">1</div>
+                    <div class="theme-badge" id="themeBadge"></div>
+                    <div class="difficulty-badge" id="difficultyBadge"></div>
+                    <div class="question-text" id="questionText">Chargement des questions...</div>
+                    <div class="options" id="optionsContainer"></div>
+                    <div id="answerExplanation" class="answer-explanation hidden"></div>
+                </div>
+
+                <div class="navigation">
+                    <button class="nav-btn prev" id="prevBtn" onclick="previousQuestion()" disabled>Précédent</button>
+                    <button class="nav-btn next" id="nextBtn" onclick="nextQuestion()">Suivant</button>
+                    <button class="nav-btn finish hidden" id="finishBtn" onclick="finishQuiz()">Terminer</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Écran de résultats -->
+        <div id="resultScreen" class="hidden">
+            <div class="header">
+                <h1>Résultats du Quiz</h1>
+                <p>Voici votre score</p>
+            </div>
+            <div class="results">
+                <div class="user-info">
+                    <strong id="finalUserDisplay"></strong>
+                    <span id="finalRoleDisplay"></span>
+                    <span id="finalLevelDisplay"></span>
+                    <span id="finalModeDisplay"></span>
+                </div>
+                
+                <div class="score-circle" id="scoreCircle">
+                    <div class="score-inner">
+                        <div id="scorePercentage">0%</div>
+                        <div style="font-size: 0.5em;" id="scoreText">0/15</div>
+                    </div>
+                </div>
+
+                <div id="feedback" style="font-size: 1.2em; margin: 20px 0; color: #2c5530;"></div>
+
+                <div id="weaknessAnalysis" class="weakness-analysis hidden">
+                    <h3>📚 Points à revoir :</h3>
+                    <div id="weaknessList"></div>
+                </div>
+
+                <div id="correctionDetails" class="correction-details hidden">
+                    <h3>❌ Questions avec erreurs :</h3>
+                    <div id="correctionList"></div>
+                </div>
+
+                <div class="results-buttons">
+                    <button class="btn" onclick="newTest()">Faire un autre test</button>
+                    <button class="btn-secondary" onclick="restartQuiz()">⚽ Page d'accueil</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        ATKAN ACADEMY - Tous droits réservés 2025 ® 
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
