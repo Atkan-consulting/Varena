@@ -1,74 +1,1038 @@
-const questionsByRole = {
-    "central": [
-        // LOI 1: Le terrain de jeu
-        { "question": "Quelle est la largeur maximale autorisée d'un terrain de football international ?", "options": ["68 m", "75 m", "90 m", "100 m"], "answer": "68 m", "theme": "Loi 1 - Terrain", "difficulty": "easy", "explanation": "Pour les matchs internationaux, la largeur est généralement de 68m pour une longueur de 105m." },
-        { "question": "Quelle est la longueur minimale d'un terrain pour un match international ?", "options": ["90 m", "100 m", "105 m", "110 m"], "answer": "105 m", "theme": "Loi 1 - Terrain", "difficulty": "easy", "explanation": "Pour les matchs internationaux, la longueur est généralement de 105m pour une largeur de 68m." },
-        { "question": "Quelle est la taille standard d'un but de football ?", "options": ["7,32 m de large et 2,44 m de haut", "7 m de large et 2,50 m de haut", "8 m de large et 2,40 m de haut"], "answer": "7,32 m de large et 2,44 m de haut", "theme": "Loi 1 - Terrain", "difficulty": "easy", "explanation": "Les dimensions officielles sont de 7,32 mètres (8 yards) de large et 2,44 mètres (8 pieds) de haut." },
-        { "question": "La surface de réparation mesure :", "options": ["12 m × 20 m", "16,5 m x 40,3 m", "18 m × 40 m"], "answer": "16,5 m x 40,3 m", "theme": "Loi 1 - Terrain", "difficulty": "medium", "explanation": "La surface de réparation s'étend à 16,5 m de la ligne de but et sur une largeur de 40,3 m." },
-        { "question": "Quelle est la distance entre le point de penalty et la ligne de but ?", "options": ["9,15 m", "10 m", "11 m", "12 m"], "answer": "11 m", "theme": "Loi 1 - Terrain", "difficulty": "easy", "explanation": "Le point de penalty est situé à 11 mètres (12 yards) du point central de la ligne de but." },
-        { "question": "Avant un match, on découvre que les filets d'un but sont troués. Que doit faire l'arbitre ?", "options": ["Annuler le match", "Demander réparation avant le coup d'envoi", "Ignorer si les deux équipes sont d'accord"], "answer": "Demander réparation avant le coup d'envoi", "theme": "Loi 1 - Terrain (Cas pratique)", "difficulty": "medium", "explanation": "L'arbitre doit s'assurer que l'équipement du terrain, y compris les filets, est conforme avant de commencer le match." },
+// QCM Arbitrage Football - Lois du Jeu 2025/26
+// Toutes les questions extraites des documents PDF
 
-        // LOI 2: Le ballon
-        { "question": "Quel est le poids réglementaire d'un ballon (taille 5) en début de match ?", "options": ["350-400 g", "410-450 g", "450-500 g"], "answer": "410-450 g", "theme": "Loi 2 - Ballon", "difficulty": "easy", "explanation": "Le ballon doit peser entre 410 et 450 grammes au début du match." },
-        { "question": "Quelle est la pression réglementaire du ballon ?", "options": ["0,6 – 1,1 atm", "1,2 - 1,5 atm", "0,4 - 0,7 atm"], "answer": "0,6 – 1,1 atm", "theme": "Loi 2 - Ballon", "difficulty": "medium", "explanation": "La pression du ballon doit se situer entre 0,6 et 1,1 atmosphère au niveau de la mer." },
-        { "question": "Que doit faire l'arbitre si le ballon éclate pendant le jeu ?", "options": ["Arrêter immédiatement et reprendre par balle à terre", "Laisser jouer jusqu'à la sortie", "Donner un coup franc indirect"], "answer": "Arrêter immédiatement et reprendre par balle à terre", "theme": "Loi 2 - Ballon", "difficulty": "medium", "explanation": "Si le ballon devient défectueux, le jeu est arrêté et reprend par une balle à terre à l'endroit où se trouvait le ballon." },
-        { "question": "Le ballon éclate juste après avoir franchi la ligne de but. Décision ?", "options": ["But valable", "But refusé, balle à terre", "Renvoi de but"], "answer": "But valable", "theme": "Loi 2 - Ballon (Cas pratique)", "difficulty": "hard", "explanation": "Le but est valable car l'action (franchissement de la ligne) s'est produite avant que le ballon ne devienne défectueux. Le jeu reprend par un coup d'envoi." },
+const questions = [
+  // LOI 1 : LE TERRAIN DE JEU
+  {
+    id: 1,
+    loi: "Loi 1 - Le terrain de jeu",
+    question: "Quelle est la largeur maximale autorisée d'un terrain de football international ?",
+    options: ["68 m", "75 m", "90 m", "100 m"],
+    correct: 0,
+    explication: "La largeur maximale d'un terrain international est de 68 m"
+  },
+  {
+    id: 2,
+    loi: "Loi 1 - Le terrain de jeu",
+    question: "Quelle est la longueur minimale d'un terrain pour un match international ?",
+    options: ["90 m", "100 m", "105 m", "110 m"],
+    correct: 2,
+    explication: "La longueur minimale pour un match international est de 105 m"
+  },
+  {
+    id: 3,
+    loi: "Loi 1 - Le terrain de jeu",
+    question: "Quelle est la taille standard d'un but de football ?",
+    options: ["7,32 m de large et 2,44 m de haut", "7 m de large et 2,50 m de haut", "8 m de large et 2,40 m de haut", "7,50 m de large et 2,45 m de haut"],
+    correct: 0,
+    explication: "Les dimensions standard sont 7,32 m × 2,44 m"
+  },
+  {
+    id: 4,
+    loi: "Loi 1 - Le terrain de jeu",
+    question: "Où doit être placé le drapeau de coin ?",
+    options: ["À 1 m du coin", "Directement dans l'angle du terrain", "À 0,5 m du coin", "Il n'est pas obligatoire"],
+    correct: 1,
+    explication: "Le drapeau doit être placé directement dans l'angle du terrain"
+  },
+  {
+    id: 5,
+    loi: "Loi 1 - Le terrain de jeu",
+    question: "Le rond central a quel rayon ?",
+    options: ["7,32 m", "8 m", "9,15 m", "10 m"],
+    correct: 2,
+    explication: "Le rayon du rond central est de 9,15 m"
+  },
+  {
+    id: 6,
+    loi: "Loi 1 - Le terrain de jeu",
+    question: "La surface de réparation mesure :",
+    options: ["12 m × 20 m", "16,5 m × 40,3 m", "18 m × 40 m", "20 m × 50 m"],
+    correct: 1,
+    explication: "La surface de réparation mesure 16,5 m de profondeur × 40,3 m de large"
+  },
+  {
+    id: 7,
+    loi: "Loi 1 - Le terrain de jeu",
+    question: "Quelle est la distance entre le point de penalty et la ligne de but ?",
+    options: ["9,15 m", "10 m", "11 m", "12 m"],
+    correct: 2,
+    explication: "La distance est de 11 m"
+  },
+  {
+    id: 8,
+    loi: "Loi 1 - Le terrain de jeu",
+    question: "Les filets de but :",
+    options: ["Sont obligatoires", "Peuvent être retirés si les deux équipes sont d'accord", "Ne doivent pas gêner le gardien", "Ne doivent pas toucher le sol"],
+    correct: 2,
+    explication: "Les filets ne doivent pas gêner le gardien"
+  },
+  {
+    id: 9,
+    loi: "Loi 1 - Le terrain de jeu",
+    question: "La pelouse artificielle :",
+    options: ["Est interdite en compétitions officielles", "Doit être verte", "Doit avoir un mélange de sable et caoutchouc", "Peut être de n'importe quelle couleur"],
+    correct: 1,
+    explication: "La pelouse artificielle doit être verte"
+  },
+  {
+    id: 10,
+    loi: "Loi 1 - Le terrain de jeu",
+    question: "Quelle est la hauteur maximale d'un drapeau de corner ?",
+    options: ["1,50 m", "1,60 m", "1,70 m", "2,00 m"],
+    correct: 2,
+    explication: "La hauteur maximale est de 1,70 m"
+  },
+  {
+    id: 11,
+    loi: "Loi 1 - Le terrain de jeu",
+    question: "Quelle précision récente a été ajoutée pour les lignes de but ?",
+    options: ["Elles doivent être plus larges que les autres", "Elles peuvent inclure la technologie sur toute leur largeur", "Elles doivent être visibles en toutes conditions météo", "Elles doivent être jaunes fluorescentes"],
+    correct: 1,
+    explication: "Les lignes peuvent inclure la technologie"
+  },
+  {
+    id: 12,
+    loi: "Loi 1 - Le terrain de jeu",
+    question: "Les surfaces hybrides (naturel + synthétique) :",
+    options: ["Sont interdites", "Sont désormais officiellement reconnues par l'IFAB", "Doivent être à 50/50", "Sont réservées aux matchs amicaux"],
+    correct: 1,
+    explication: "Elles sont reconnues officiellement"
+  },
 
-        // LOI 3: Les joueurs
-        { "question": "Combien de joueurs au minimum une équipe doit-elle avoir pour continuer un match ?", "options": ["6", "7", "8"], "answer": "7", "theme": "Loi 3 - Joueurs", "difficulty": "easy", "explanation": "Une équipe ne peut pas commencer ou continuer un match avec moins de 7 joueurs." },
-        { "question": "Dans les compétitions officielles de la FIFA, combien de remplacements sont autorisés (hors prolongation) ?", "options": ["3", "4", "5", "Illimité"], "answer": "5", "theme": "Loi 3 - Joueurs", "difficulty": "easy", "explanation": "La règle autorise jusqu'à 5 remplacements effectués au cours de trois interruptions de jeu maximum." },
-        { "question": "Un joueur expulsé avant le coup d'envoi peut-il être remplacé ?", "options": ["Oui", "Non", "Oui, mais uniquement si c'est le capitaine"], "answer": "Oui", "theme": "Loi 3 - Joueurs", "difficulty": "medium", "explanation": "Un joueur expulsé avant le coup d'envoi peut être remplacé par un des remplaçants inscrits, sans que l'équipe ne perde une possibilité de remplacement." },
-        { "question": "Si une équipe se retrouve avec moins de 7 joueurs suite à des expulsions, l'arbitre doit :", "options": ["Continuer le match", "Arrêter le match", "Demander l'avis du délégué"], "answer": "Arrêter le match", "theme": "Loi 3 - Joueurs", "difficulty": "medium", "explanation": "Si le nombre de joueurs d'une équipe devient inférieur à 7, l'arbitre doit définitivement arrêter le match." },
+  // LOI 2 : LE BALLON
+  {
+    id: 13,
+    loi: "Loi 2 - Le ballon",
+    question: "Quel est le poids réglementaire d'un ballon en début de match (lois FIFA/IFAB) ?",
+    options: ["350–400 g", "410–450 g", "450–500 g", "500–550 g"],
+    correct: 1,
+    explication: "Le poids réglementaire est de 410–450 g"
+  },
+  {
+    id: 14,
+    loi: "Loi 2 - Le ballon",
+    question: "Quel est le diamètre d'un ballon de taille 5 ?",
+    options: ["60–65 cm", "68–70 cm", "72–75 cm", "66–69 cm"],
+    correct: 1,
+    explication: "Le diamètre est de 68–70 cm"
+  },
+  {
+    id: 15,
+    loi: "Loi 2 - Le ballon",
+    question: "Quelle est la pression réglementaire du ballon ?",
+    options: ["0,6 – 1,1 atm", "1,2 – 1,5 atm", "0,4 – 0,7 atm", "1,0 – 1,4 atm"],
+    correct: 0,
+    explication: "La pression est de 0,6 – 1,1 atm (600–1100 g/cm²)"
+  },
+  {
+    id: 16,
+    loi: "Loi 2 - Le ballon",
+    question: "Le ballon doit être :",
+    options: ["Rond, quelle que soit la matière", "Rond, de cuir uniquement", "Rond, en cuir ou matière adéquate", "Peut être carré si les deux équipes acceptent"],
+    correct: 2,
+    explication: "Rond, en cuir ou matériau approprié"
+  },
+  {
+    id: 17,
+    loi: "Loi 2 - Le ballon",
+    question: "Quand doit-on changer un ballon défectueux ?",
+    options: ["À la demande d'un capitaine", "Dès que l'arbitre constate une anomalie", "À la mi-temps seulement", "Si le gardien le demande"],
+    correct: 1,
+    explication: "Dès que l'arbitre constate une anomalie"
+  },
+  {
+    id: 18,
+    loi: "Loi 2 - Le ballon",
+    question: "Qui décide quel ballon officiel est utilisé lors du match ?",
+    options: ["Le capitaine de l'équipe locale", "L'arbitre", "Le délégué du match", "La fédération organisatrice"],
+    correct: 1,
+    explication: "L'arbitre décide"
+  },
+  {
+    id: 19,
+    loi: "Loi 2 - Le ballon",
+    question: "Un ballon ne peut contenir :",
+    options: ["De la mousse", "Des composants électroniques de suivi", "Des motifs multicolores", "Des puces de géolocalisation validées"],
+    correct: 1,
+    explication: "Faux - maintenant permis s'ils sont homologués par l'IFAB"
+  },
+  {
+    id: 20,
+    loi: "Loi 2 - Le ballon",
+    question: "Combien de ballons de rechange doivent être disponibles en match officiel ?",
+    options: ["Au moins 2", "Au moins 3", "Au moins 5", "Ce n'est pas défini, mais doivent être approuvés par l'arbitre"],
+    correct: 3,
+    explication: "Ce n'est pas défini, mais ils doivent être approuvés par l'arbitre"
+  },
+  {
+    id: 21,
+    loi: "Loi 2 - Le ballon",
+    question: "Dans un match FIFA, le ballon doit avoir quel logo ?",
+    options: ["FIFA QUALITY PRO", "UEFA Approved", "FIFA Fair Play", "IFAB Certified"],
+    correct: 0,
+    explication: "FIFA QUALITY PRO"
+  },
+  {
+    id: 22,
+    loi: "Loi 2 - Le ballon",
+    question: "Que doit faire l'arbitre si le ballon éclate pendant le jeu ?",
+    options: ["Arrêter immédiatement et balle à terre", "Laisser jouer jusqu'à la sortie", "Donner coup franc indirect", "Donner ballon de rechange à l'équipe qui attaquait"],
+    correct: 0,
+    explication: "Arrêter immédiatement et reprendre par balle à terre"
+  },
 
-        // LOI 4: L'équipement des joueurs
-        { "question": "Où doivent être portés les protège-tibias ?", "options": ["Sous les chaussettes", "Sur les chaussettes", "Peu importe"], "answer": "Sous les chaussettes", "theme": "Loi 4 - Équipement", "difficulty": "easy", "explanation": "Les protège-tibias font partie de l'équipement obligatoire et doivent être entièrement recouverts par les chaussettes." },
-        { "question": "Les joueurs peuvent-ils porter des bijoux ?", "options": ["Oui si recouverts de ruban adhésif", "Non, jamais", "Oui, si cachés sous le maillot"], "answer": "Non, jamais", "theme": "Loi 4 - Équipement", "difficulty": "easy", "explanation": "Tous les types de bijoux sont interdits et doivent être enlevés pour des raisons de sécurité." },
-        
-        // LOI 5: L'arbitre
-        { "question": "Quand l'autorité de l'arbitre commence-t-elle ?", "options": ["Au coup d'envoi", "Dès son arrivée au stade", "À la présentation des équipes"], "answer": "Dès son arrivée au stade", "theme": "Loi 5 - Arbitre", "difficulty": "medium", "explanation": "L'autorité de l'arbitre et le pouvoir de sanctionner débutent dès qu'il entre sur le terrain pour l'inspection d'avant-match." },
-        { "question": "L'arbitre peut-il revenir sur une décision ?", "options": ["Non, jamais", "Oui, tant que le jeu n'a pas repris ou que le match n'est pas terminé", "Oui, mais seulement avec l'accord des deux capitaines"], "answer": "Oui, tant que le jeu n'a pas repris ou que le match n'est pas terminé", "theme": "Loi 5 - Arbitre", "difficulty": "medium", "explanation": "L'arbitre peut modifier sa décision tant qu'il n'a pas sifflé la reprise du jeu ou terminé une mi-temps ou le match." },
+  // LOI 3 : LES JOUEURS
+  {
+    id: 23,
+    loi: "Loi 3 - Les joueurs",
+    question: "Combien de joueurs minimum une équipe doit-elle avoir pour continuer le match ?",
+    options: ["5", "6", "7", "8"],
+    correct: 2,
+    explication: "7 joueurs minimum"
+  },
+  {
+    id: 24,
+    loi: "Loi 3 - Les joueurs",
+    question: "Combien de joueurs maximum peuvent commencer un match par équipe ?",
+    options: ["10", "11", "12", "13"],
+    correct: 1,
+    explication: "11 joueurs maximum"
+  },
+  {
+    id: 25,
+    loi: "Loi 3 - Les joueurs",
+    question: "Quelle est la sanction si une équipe commence avec 12 joueurs par erreur ?",
+    options: ["Rien, on continue", "Arrêt du jeu, joueur retiré, reprise balle à terre", "Arrêt du jeu, avertissement au joueur supplémentaire", "Expulsion de l'entraîneur"],
+    correct: 2,
+    explication: "Arrêt du jeu, avertissement au joueur supplémentaire"
+  },
+  {
+    id: 26,
+    loi: "Loi 3 - Les joueurs",
+    question: "Un remplaçant entre sur le terrain sans autorisation de l'arbitre. Décision ?",
+    options: ["Rien, on continue", "Coup franc direct contre son équipe + avertissement", "Coup franc indirect + avertissement", "Arrêt, exclusion"],
+    correct: 1,
+    explication: "Coup franc direct + avertissement"
+  },
+  {
+    id: 27,
+    loi: "Loi 3 - Les joueurs",
+    question: "Dans les compétitions officielles FIFA, combien de remplacements sont autorisés (hors prolongation) ?",
+    options: ["3", "4", "5", "Illimité"],
+    correct: 2,
+    explication: "5 remplacements"
+  },
+  {
+    id: 28,
+    loi: "Loi 3 - Les joueurs",
+    question: "Un joueur expulsé avant le coup d'envoi peut-il être remplacé par un autre ?",
+    options: ["Oui", "Non", "Oui mais uniquement si capitaine", "Oui mais seulement en match amical"],
+    correct: 0,
+    explication: "Oui, il peut être remplacé"
+  },
+  {
+    id: 29,
+    loi: "Loi 3 - Les joueurs",
+    question: "Quand un joueur sort du terrain pour blessure, quand peut-il revenir ?",
+    options: ["Dès qu'il le veut", "Après 30 secondes minimum", "Après accord de l'arbitre", "À la prochaine sortie de balle"],
+    correct: 2,
+    explication: "Après accord de l'arbitre"
+  },
+  {
+    id: 30,
+    loi: "Loi 3 - Les joueurs",
+    question: "Le gardien peut-il échanger son poste avec un joueur de champ pendant le jeu ?",
+    options: ["Oui, sans restriction", "Oui, mais seulement à un arrêt de jeu et avec autorisation de l'arbitre", "Non, jamais", "Oui, uniquement si capitaine"],
+    correct: 1,
+    explication: "Oui, mais seulement à un arrêt de jeu et avec autorisation de l'arbitre"
+  },
+  {
+    id: 31,
+    loi: "Loi 3 - Les joueurs",
+    question: "Si une équipe se retrouve avec moins de 7 joueurs suite à des expulsions, l'arbitre doit :",
+    options: ["Continuer", "Arrêter le match", "Donner victoire 3-0 à l'autre équipe", "Demander avis du délégué"],
+    correct: 1,
+    explication: "Arrêter le match"
+  },
 
-        // LOI 6: Les autres officiels de match
-        { "question": "Qui assiste l'arbitre central pour signaler les hors-jeu et sorties de balle ?", "options": ["Le délégué", "Les arbitres assistants", "Le 4e arbitre"], "answer": "Les arbitres assistants", "theme": "Loi 6 - Officiels", "difficulty": "easy", "explanation": "Les arbitres assistants ont pour tâches principales de signaler quand le ballon est sorti et les positions de hors-jeu." },
-        
-        // LOI 7: La durée du match
-        { "question": "Quelle est la durée d'une prolongation (en cas d'égalité) ?", "options": ["2 x 10 minutes", "2 x 12 minutes", "2 x 15 minutes"], "answer": "2 x 15 minutes", "theme": "Loi 7 - Durée", "difficulty": "easy", "explanation": "Une prolongation est constituée de deux périodes de 15 minutes chacune." },
-        
-        // LOI 8: Le coup d'envoi et reprise du jeu
-        { "question": "Qui reçoit le ballon lors d'une balle à terre dans la surface de réparation ?", "options": ["L'équipe en attaque", "Le gardien de l'équipe en défense", "L'arbitre choisit"], "answer": "Le gardien de l'équipe en défense", "theme": "Loi 8 - Reprise du jeu", "difficulty": "medium", "explanation": "Si le jeu est arrêté dans la surface, la balle à terre est toujours donnée au gardien de l'équipe qui défend." },
-        
-        // LOI 9: Le ballon en jeu et hors du jeu
-        { "question": "Le ballon est en jeu s'il rebondit sur :", "options": ["Les poteaux de but", "La barre transversale", "Le drapeau de corner", "Toutes ces réponses"], "answer": "Toutes ces réponses", "theme": "Loi 9 - Ballon en jeu", "difficulty": "easy", "explanation": "Le ballon reste en jeu s'il touche un poteau, la barre transversale ou un drapeau de coin et reste à l'intérieur du terrain." },
-        
-        // LOI 10: Détermination du résultat d'un match
-        { "question": "Pendant une séance de tirs au but, si les deux équipes sont à égalité après 5 tirs :", "options": ["La séance est arrêtée, match nul", "On procède à des tirs supplémentaires un par un (mort subite)", "Le match est rejoué"], "answer": "On procède à des tirs supplémentaires un par un (mort subite)", "theme": "Loi 10 - Tirs au but", "difficulty": "easy", "explanation": "Si l'égalité persiste après 5 tirs, la séance continue avec un tir par équipe jusqu'à ce que l'une marque et l'autre non." },
-        
-        // LOI 11: Le hors-jeu
-        { "question": "La position de hors-jeu est jugée au moment où...", "options": ["le joueur reçoit le ballon", "le ballon est joué ou touché par un coéquipier", "le joueur franchit la ligne médiane"], "answer": "le ballon est joué ou touché par un coéquipier", "theme": "Loi 11 - Hors-jeu", "difficulty": "medium", "explanation": "La position de hors-jeu d'un joueur est évaluée au moment précis où le ballon est joué par l'un de ses coéquipiers." },
-        { "question": "Un joueur en position de hors-jeu reçoit une passe déviée volontairement par un défenseur. Décision ?", "options": ["Hors-jeu", "Pas hors-jeu", "Balle à terre"], "answer": "Pas hors-jeu", "theme": "Loi 11 - Hors-jeu", "difficulty": "hard", "explanation": "Si un joueur en position de hors-jeu reçoit le ballon d'un adversaire qui a délibérément joué le ballon, il n'est pas considéré comme tirant un avantage de sa position." },
-        
-        // LOI 12: Fautes et incorrections
-        { "question": "Un défenseur tacle avec une brutalité excessive. Décision ?", "options": ["Avertissement + coup franc indirect", "Coup franc direct + expulsion", "Coup franc direct + avertissement"], "answer": "Coup franc direct + expulsion", "theme": "Loi 12 - Fautes", "difficulty": "medium", "explanation": "Un tacle engageant l'intégrité physique de l'adversaire est un acte de brutalité, sanctionné d'un coup franc direct et d'une expulsion (carton rouge)." },
-        { "question": "L'attaquant marque avec la main de manière involontaire. Décision ?", "options": ["But valable", "Coup franc direct pour la défense", "Penalty"], "answer": "Coup franc direct pour la défense", "theme": "Loi 12 - Fautes", "difficulty": "medium", "explanation": "Même si la main est accidentelle, un but ne peut pas être marqué directement de la main/du bras. Le but est refusé et le jeu reprend par un coup franc direct." },
-        
-        // LOI 13: Coups francs
-        { "question": "Un coup franc indirect est tiré directement dans le but adverse. Décision ?", "options": ["But valable", "Coup de pied de coin", "Coup de but (renvoi de but)"], "answer": "Coup de but (renvoi de but)", "theme": "Loi 13 - Coups francs", "difficulty": "medium", "explanation": "Un but ne peut être marqué sur coup franc indirect que si le ballon a été touché par un autre joueur. Sinon, la reprise est un coup de pied de but." },
-        
-        // LOI 14: Le coup de pied de réparation (penalty)
-        { "question": "Si le tireur feinte après avoir terminé sa course d'élan sur un penalty :", "options": ["C'est autorisé", "C'est une faute, avertissement et coup franc indirect", "Le penalty est à retirer"], "answer": "C'est une faute, avertissement et coup franc indirect", "theme": "Loi 14 - Penalty", "difficulty": "hard", "explanation": "Une feinte pendant la course d'élan est autorisée, mais une feinte illicite une fois la course terminée est sanctionnée d'un avertissement et d'un coup franc indirect." },
-        
-        // LOI 15: La rentrée de touche
-        { "question": "Si le ballon rentre directement dans son propre but sur une touche :", "options": ["But contre son camp", "Corner pour l'adversaire", "Touche à rejouer"], "answer": "Corner pour l'adversaire", "theme": "Loi 15 - Touche", "difficulty": "medium", "explanation": "Un but ne peut être marqué directement sur une touche. Si le ballon entre dans le but du tireur, un corner est accordé à l'adversaire." },
-        
-        // LOI 16: Le coup de pied de but
-        { "question": "Si un adversaire entre trop tôt dans la surface sur un coup de pied de but et intercepte le ballon, la décision est :", "options": ["Laisser jouer", "Rejouer le coup de pied de but", "Coup franc indirect"], "answer": "Rejouer le coup de pied de but", "theme": "Loi 16 - Coup de pied de but", "difficulty": "medium", "explanation": "Si un joueur adverse entre dans la surface de réparation avant que le ballon ne soit en jeu et commet une infraction, le coup de pied de but doit être retiré." },
-        
-        // LOI 17: Le coup de pied de coin (corner)
-        { "question": "Si un corner est frappé directement dans son propre but :", "options": ["But contre son camp", "Corner à rejouer", "Corner pour l'adversaire"], "answer": "Corner pour l'adversaire", "theme": "Loi 17 - Corner", "difficulty": "medium", "explanation": "Un but ne peut pas être marqué contre son camp directement sur corner. Le jeu reprendra par un corner pour l'équipe adverse." }
-    ],
-    "assistant": [
-        { "question": "L'arbitre assistant doit lever son drapeau pour signaler un hors-jeu :", "options": ["Dès que le joueur est en position de hors-jeu", "Quand le joueur en position de hors-jeu interfère avec le jeu", "Seulement si l'arbitre le demande"], "answer": "Quand le joueur en position de hors-jeu interfère avec le jeu", "theme": "Collaboration", "difficulty": "medium", "explanation": "La simple position ne suffit pas. L'assistant doit attendre de voir si le joueur participe activement à l'action pour signaler l'infraction." },
-        { "question": "En cas de désaccord avec l'arbitre central sur une décision, l'assistant doit :", "options": ["Insister sur sa décision", "Se soumettre à la décision de l'arbitre", "Arrêter le jeu pour discuter"], "answer": "Se soumettre à la décision de l'arbitre", "theme": "Collaboration", "difficulty": "easy", "explanation": "L'arbitre central a toujours le dernier mot. Le rôle de l'assistant est de l'assister, mais la décision finale lui revient." },
-        { "question": "Pour juger la ligne de hors-jeu, l'arbitre assistant doit se positionner à hauteur :", "options": ["Du ballon", "De l'avant-dernier défenseur", "Du dernier défenseur"], "answer": "De l'avant-dernier défenseur", "theme": "Technique", "difficulty": "medium", "explanation": "La position de référence pour juger le hors-jeu est l'avant-dernier défenseur (le gardien étant souvent le dernier)." }
-    ]
-};
+  // LOI 4 : L'ÉQUIPEMENT DES JOUEURS
+  {
+    id: 32,
+    loi: "Loi 4 - L'équipement des joueurs",
+    question: "Quels sont les équipements obligatoires d'un joueur de football ?",
+    options: ["Maillot, short, protège-tibias, chaussettes, chaussures", "Maillot, short, protège-tibias, brassard, chaussures", "Maillot, pantalon long, protège-tibias, chaussures", "Maillot, protège-tibias, chaussures, gants"],
+    correct: 0,
+    explication: "Maillot, short, protège-tibias, chaussettes, chaussures"
+  },
+  {
+    id: 33,
+    loi: "Loi 4 - L'équipement des joueurs",
+    question: "Où doivent être portés les protège-tibias ?",
+    options: ["Sous les chaussettes", "Sur les chaussettes", "Peu importe", "Collés au short"],
+    correct: 0,
+    explication: "Sous les chaussettes"
+  },
+  {
+    id: 34,
+    loi: "Loi 4 - L'équipement des joueurs",
+    question: "Le maillot du gardien doit :",
+    options: ["Être de couleur différente des joueurs de champ", "Être de couleur différente uniquement de son équipe", "Être de couleur identique aux arbitres", "Être obligatoirement vert"],
+    correct: 0,
+    explication: "Être de couleur différente des joueurs de champ"
+  },
+  {
+    id: 35,
+    loi: "Loi 4 - L'équipement des joueurs",
+    question: "Les joueurs peuvent-ils porter des bijoux ?",
+    options: ["Oui si scotchés", "Non, jamais", "Oui, si autorisés par le capitaine", "Oui, si cachés sous le maillot"],
+    correct: 1,
+    explication: "Non, jamais"
+  },
+  {
+    id: 36,
+    loi: "Loi 4 - L'équipement des joueurs",
+    question: "Quelles sont les règles concernant les sous-maillots visibles ?",
+    options: ["Doivent être de la même couleur que les manches du maillot", "Peuvent être multicolores", "Doivent être blancs obligatoirement", "Autorisés uniquement en hiver"],
+    correct: 0,
+    explication: "Doivent être de la même couleur que les manches du maillot"
+  },
+
+  // LOI 5 : L'ARBITRE
+  {
+    id: 37,
+    loi: "Loi 5 - L'arbitre",
+    question: "Qui a l'autorité totale pour appliquer les Lois du Jeu pendant un match ?",
+    options: ["Le capitaine", "L'entraîneur", "L'arbitre", "Le délégué"],
+    correct: 2,
+    explication: "L'arbitre a l'autorité totale"
+  },
+  {
+    id: 38,
+    loi: "Loi 5 - L'arbitre",
+    question: "Quand l'autorité de l'arbitre commence-t-elle ?",
+    options: ["Au coup d'envoi", "Dès l'arrivée au stade", "À la présentation des équipes", "Après tirage au sort"],
+    correct: 1,
+    explication: "Dès son arrivée sur le site du match"
+  },
+  {
+    id: 39,
+    loi: "Loi 5 - L'arbitre",
+    question: "L'arbitre peut-il revenir sur une décision ?",
+    options: ["Non, jamais", "Oui, tant que le jeu n'a pas repris ou que le match n'est pas terminé", "Oui, uniquement si les deux capitaines sont d'accord", "Oui, seulement avant la pause"],
+    correct: 1,
+    explication: "Oui, tant que le jeu n'a pas repris ou que le match n'est pas terminé"
+  },
+  {
+    id: 40,
+    loi: "Loi 5 - L'arbitre",
+    question: "L'arbitre peut utiliser la technologie (ex : montre connectée, système de ligne de but) :",
+    options: ["Non", "Oui, si homologuée par l'IFAB", "Oui, si l'entraîneur accepte", "Seulement en finale"],
+    correct: 1,
+    explication: "Oui, si homologuée par l'IFAB"
+  },
+
+  // LOI 6 : LES AUTRES OFFICIELS DE MATCH
+  {
+    id: 41,
+    loi: "Loi 6 - Les autres officiels de match",
+    question: "Qui assiste l'arbitre central pour signaler les hors-jeu et sorties de balle ?",
+    options: ["Le délégué", "Les arbitres assistants", "Le 4ᵉ arbitre", "Les capitaines"],
+    correct: 1,
+    explication: "Les arbitres assistants"
+  },
+  {
+    id: 42,
+    loi: "Loi 6 - Les autres officiels de match",
+    question: "Le 4ᵉ arbitre est chargé principalement de :",
+    options: ["Diriger le match", "Gérer les changements et le temps additionnel", "Signaler les hors-jeu", "Valider les buts"],
+    correct: 1,
+    explication: "Gérer les changements et le temps additionnel"
+  },
+  {
+    id: 43,
+    loi: "Loi 6 - Les autres officiels de match",
+    question: "Le rôle des arbitres assistants vidéo (VAR) est :",
+    options: ["De revoir toutes les actions", "D'aider l'arbitre uniquement sur des erreurs claires et manifestes", "De remplacer l'arbitre", "De juger les corners"],
+    correct: 1,
+    explication: "D'aider l'arbitre uniquement sur des erreurs claires et manifestes"
+  },
+
+  // LOI 7 : LA DURÉE DU MATCH
+  {
+    id: 44,
+    loi: "Loi 7 - La durée du match",
+    question: "Combien de temps dure une rencontre de football réglementaire (hors prolongations) ?",
+    options: ["80 minutes (2 × 40 min)", "90 minutes (2 × 45 min)", "100 minutes (2 × 50 min)", "120 minutes (2 × 60 min)"],
+    correct: 1,
+    explication: "90 minutes (2 × 45 min)"
+  },
+  {
+    id: 45,
+    loi: "Loi 7 - La durée du match",
+    question: "Quelle est la durée de la pause entre les deux mi-temps ?",
+    options: ["Maximum 10 minutes", "Maximum 15 minutes", "Maximum 20 minutes", "Illimitée"],
+    correct: 1,
+    explication: "Maximum 15 minutes"
+  },
+  {
+    id: 46,
+    loi: "Loi 7 - La durée du match",
+    question: "Quelle est la durée d'une prolongation (en cas d'égalité) ?",
+    options: ["2 × 10 minutes", "2 × 12 minutes", "2 × 15 minutes", "2 × 20 minutes"],
+    correct: 2,
+    explication: "2 × 15 minutes"
+  },
+
+  // LOI 8 : LE COUP D'ENVOI ET REPRISE DU JEU
+  {
+    id: 47,
+    loi: "Loi 8 - Le coup d'envoi et reprise du jeu",
+    question: "Quand a lieu le coup d'envoi ?",
+    options: ["Au début du match", "Au début de la 2ᵉ mi-temps", "Après chaque but", "Toutes ces réponses"],
+    correct: 3,
+    explication: "Dans toutes ces situations"
+  },
+  {
+    id: 48,
+    loi: "Loi 8 - Le coup d'envoi et reprise du jeu",
+    question: "Quelle est la position correcte des joueurs au coup d'envoi ?",
+    options: ["Tous dans leur camp, adversaires à 9,15 m du ballon", "Tous au milieu du terrain", "Tous derrière le ballon", "Aucun positionnement obligatoire"],
+    correct: 0,
+    explication: "Tous dans leur camp, adversaires à 9,15 m du ballon"
+  },
+  {
+    id: 49,
+    loi: "Loi 8 - Le coup d'envoi et reprise du jeu",
+    question: "Le ballon est en jeu au coup d'envoi quand :",
+    options: ["Il est frappé et bouge clairement", "L'arbitre siffle", "Les deux équipes l'acceptent", "Le capitaine touche le ballon"],
+    correct: 0,
+    explication: "Il est frappé et bouge clairement"
+  },
+  {
+    id: 50,
+    loi: "Loi 8 - Le coup d'envoi et reprise du jeu",
+    question: "Un but peut-il être marqué directement sur un coup d'envoi ?",
+    options: ["Oui, contre l'adversaire", "Oui, contre son propre camp", "Non", "Oui uniquement en prolongation"],
+    correct: 0,
+    explication: "Oui, contre l'adversaire (mais pas contre son camp : corner accordé)"
+  },
+
+  // LOI 9 : LE BALLON EN JEU ET HORS DU JEU
+  {
+    id: 51,
+    loi: "Loi 9 - Le ballon en jeu et hors du jeu",
+    question: "Quand le ballon est-il considéré comme « hors du jeu » ?",
+    options: ["Quand il franchit totalement les lignes de but ou de touche, au sol ou en l'air", "Quand la moitié du ballon sort", "Quand il franchit les lignes avec 3/4 du ballon", "Quand il est touché par un spectateur"],
+    correct: 0,
+    explication: "Quand il franchit totalement les lignes"
+  },
+  {
+    id: 52,
+    loi: "Loi 9 - Le ballon en jeu et hors du jeu",
+    question: "Si le ballon heurte l'arbitre et : (1) conduit directement à un but OU (2) change de possession OU (3) crée une attaque dangereuse… alors :",
+    options: ["On arrête et balle à terre", "On laisse jouer", "Corner", "Coup franc indirect"],
+    correct: 0,
+    explication: "On arrête et reprend par balle à terre"
+  },
+  {
+    id: 53,
+    loi: "Loi 9 - Le ballon en jeu et hors du jeu",
+    question: "Si le ballon éclate pendant l'action :",
+    options: ["Jeu continue", "Jeu arrêté, balle à terre", "Jeu arrêté, ballon de remplacement, reprise par balle à terre", "Corner"],
+    correct: 2,
+    explication: "Jeu arrêté, ballon de remplacement, reprise par balle à terre"
+  },
+
+  // LOI 10 : DÉTERMINATION DU RÉSULTAT D'UN MATCH
+  {
+    id: 54,
+    loi: "Loi 10 - Détermination du résultat d'un match",
+    question: "Un but est accordé quand :",
+    options: ["Le ballon franchit totalement la ligne de but entre les poteaux et sous la barre", "La moitié du ballon franchit la ligne", "Le ballon touche le filet", "Le ballon franchit la ligne avec accord du capitaine"],
+    correct: 0,
+    explication: "Le ballon doit franchir totalement la ligne de but entre les poteaux et sous la barre"
+  },
+  {
+    id: 55,
+    loi: "Loi 10 - Détermination du résultat d'un match",
+    question: "Un but marqué contre son camp sur un coup de pied de but est accordé ?",
+    options: ["Oui", "Non, corner pour l'adversaire", "Oui si validé par arbitre", "Non, balle à terre"],
+    correct: 1,
+    explication: "Non, corner pour l'adversaire"
+  },
+  {
+    id: 56,
+    loi: "Loi 10 - Détermination du résultat d'un match",
+    question: "Lors de la séance de tirs au but, combien de joueurs participent au départ par équipe ?",
+    options: ["3", "5", "7", "11"],
+    correct: 1,
+    explication: "5 joueurs par équipe"
+  },
+  {
+    id: 57,
+    loi: "Loi 10 - Détermination du résultat d'un match",
+    question: "Pendant une séance de tirs au but, si les deux équipes sont toujours à égalité après 5 tirs :",
+    options: ["Séance arrêtée", "Tirs supplémentaires un par un (mort subite)", "Match rejoué", "But en or"],
+    correct: 1,
+    explication: "Tirs supplémentaires un par un (mort subite)"
+  },
+
+  // LOI 11 : LE HORS-JEU
+  {
+    id: 58,
+    loi: "Loi 11 - Le hors-jeu",
+    question: "Un joueur est en position de hors-jeu si :",
+    options: ["Il se trouve dans la moitié de terrain adverse", "Il est plus proche du but adverse que le ballon et l'avant-dernier défenseur", "Il reçoit le ballon directement d'un coéquipier", "Il franchit la ligne médiane"],
+    correct: 1,
+    explication: "Il est plus proche du but adverse que le ballon et l'avant-dernier défenseur"
+  },
+  {
+    id: 59,
+    loi: "Loi 11 - Le hors-jeu",
+    question: "Un joueur n'est pas en position de hors-jeu quand il reçoit le ballon directement :",
+    options: ["Sur un coup de pied de but", "Sur une rentrée de touche", "Sur un corner", "Toutes ces réponses"],
+    correct: 3,
+    explication: "Dans toutes ces situations"
+  },
+  {
+    id: 60,
+    loi: "Loi 11 - Le hors-jeu",
+    question: "La position de hors-jeu est jugée :",
+    options: ["Au moment où le joueur reçoit le ballon", "Au moment où le ballon est joué ou touché par un coéquipier", "Quand le ballon franchit la ligne", "Quand l'arbitre siffle"],
+    correct: 1,
+    explication: "Au moment où le ballon est joué ou touché par un coéquipier"
+  },
+  {
+    id: 61,
+    loi: "Loi 11 - Le hors-jeu",
+    question: "Un joueur en position de hors-jeu est sanctionné seulement s'il :",
+    options: ["Interfère avec le jeu", "Interfère avec un adversaire", "Tire avantage de sa position", "Une des réponses ci-dessus"],
+    correct: 3,
+    explication: "Dans l'une de ces trois situations"
+  },
+  {
+    id: 62,
+    loi: "Loi 11 - Le hors-jeu",
+    question: "Un joueur en position de hors-jeu reçoit une passe déviée volontairement par un défenseur. Décision ?",
+    options: ["Hors-jeu", "Pas hors-jeu", "Corner", "Balle à terre"],
+    correct: 1,
+    explication: "Pas hors-jeu (car action volontaire du défenseur)"
+  },
+  {
+    id: 63,
+    loi: "Loi 11 - Le hors-jeu",
+    question: "La sanction pour un hors-jeu est :",
+    options: ["Coup franc direct", "Coup franc indirect à l'endroit de la faute", "Balle à terre", "Corner"],
+    correct: 1,
+    explication: "Coup franc indirect à l'endroit de la faute"
+  },
+
+  // LOI 12 : FAUTES ET INCORRECTIONS
+  {
+    id: 64,
+    loi: "Loi 12 - Fautes et incorrections",
+    question: "Une faute est commise lorsqu'un joueur :",
+    options: ["Charge un adversaire de manière imprudente", "Tient un adversaire", "Touche le ballon volontairement de la main", "Toutes ces réponses"],
+    correct: 3,
+    explication: "Dans toutes ces situations"
+  },
+  {
+    id: 65,
+    loi: "Loi 12 - Fautes et incorrections",
+    question: "La sanction pour une faute dans la surface de réparation est :",
+    options: ["Coup franc indirect", "Coup franc direct", "Penalty", "Carton rouge systématique"],
+    correct: 2,
+    explication: "Penalty"
+  },
+  {
+    id: 66,
+    loi: "Loi 12 - Fautes et incorrections",
+    question: "La main est sanctionnée si :",
+    options: ["Le bras est au-dessus de la tête et élargit artificiellement le corps", "Le joueur cherche à contrôler le ballon avec la main", "Le bras est en position non naturelle", "Toutes ces réponses"],
+    correct: 3,
+    explication: "Dans toutes ces situations"
+  },
+  {
+    id: 67,
+    loi: "Loi 12 - Fautes et incorrections",
+    question: "Une faute grossière est sanctionnée par :",
+    options: ["Avertissement (carton jaune)", "Expulsion (carton rouge)", "Coup franc indirect", "Rien"],
+    correct: 1,
+    explication: "Expulsion (carton rouge)"
+  },
+  {
+    id: 68,
+    loi: "Loi 12 - Fautes et incorrections",
+    question: "Le comportement antisportif est sanctionné par :",
+    options: ["Coup franc direct", "Avertissement (carton jaune)", "Expulsion", "Rien"],
+    correct: 1,
+    explication: "Avertissement (carton jaune)"
+  },
+  {
+    id: 69,
+    loi: "Loi 12 - Fautes et incorrections",
+    question: "Combien de cartons jaunes un joueur peut-il recevoir avant expulsion ?",
+    options: ["1", "2", "3", "Illimité"],
+    correct: 1,
+    explication: "2 cartons jaunes = expulsion"
+  },
+  {
+    id: 70,
+    loi: "Loi 12 - Fautes et incorrections",
+    question: "Un défenseur devance l'attaquant, le ballon touche accidentellement son bras collé au corps.",
+    options: ["Coup franc direct", "Penalty", "Pas de faute", "Carton jaune obligatoire"],
+    correct: 2,
+    explication: "Pas de faute"
+  },
+  {
+    id: 71,
+    loi: "Loi 12 - Fautes et incorrections",
+    question: "Un remplaçant entre sur le terrain sans autorisation et stoppe une attaque.",
+    options: ["Coup franc direct à l'endroit de l'interférence", "Coup franc indirect à l'endroit du ballon", "Penalty automatique", "Balle à terre"],
+    correct: 0,
+    explication: "Coup franc direct à l'endroit de l'interférence"
+  },
+  {
+    id: 72,
+    loi: "Loi 12 - Fautes et incorrections",
+    question: "Un joueur mord un adversaire dans la surface de réparation.",
+    options: ["Coup franc indirect", "Expulsion + coup de pied de réparation", "Avertissement + coup franc direct", "Rien, balle à terre"],
+    correct: 1,
+    explication: "Expulsion + penalty"
+  },
+  {
+    id: 73,
+    loi: "Loi 12 - Fautes et incorrections",
+    question: "Un défenseur retient volontairement un attaquant qui file au but.",
+    options: ["Avertissement + coup franc direct", "Expulsion + coup franc direct", "Avertissement + penalty", "Rien"],
+    correct: 1,
+    explication: "Expulsion + coup franc direct"
+  },
+  {
+    id: 74,
+    loi: "Loi 12 - Fautes et incorrections",
+    question: "Un joueur bloque un adversaire sans contact physique.",
+    options: ["Coup franc direct", "Coup franc indirect", "Penalty", "Rien"],
+    correct: 1,
+    explication: "Coup franc indirect"
+  },
+  {
+    id: 75,
+    loi: "Loi 12 - Fautes et incorrections",
+    question: "Un joueur insulte l'arbitre.",
+    options: ["Coup franc indirect", "Avertissement", "Expulsion directe", "Rien"],
+    correct: 2,
+    explication: "Expulsion directe"
+  },
+  {
+    id: 76,
+    loi: "Loi 12 - Fautes et incorrections",
+    question: "Un défenseur tire le maillot d'un attaquant qui part seul au but.",
+    options: ["Jaune + coup franc", "Rouge + coup franc", "Jaune + penalty", "Rien"],
+    correct: 1,
+    explication: "Rouge + coup franc"
+  },
+  {
+    id: 77,
+    loi: "Loi 12 - Fautes et incorrections",
+    question: "L'attaquant marque avec la main involontaire.",
+    options: ["But valable", "Coup franc direct pour la défense", "Penalty", "Balle à terre"],
+    correct: 1,
+    explication: "Coup franc direct pour la défense"
+  },
+  {
+    id: 78,
+    loi: "Loi 12 - Fautes et incorrections",
+    question: "Un joueur lève le pied à hauteur de la tête d'un adversaire sans contact.",
+    options: ["Coup franc indirect pour jeu dangereux", "Coup franc direct", "Penalty", "Rien"],
+    correct: 0,
+    explication: "Coup franc indirect pour jeu dangereux"
+  },
+
+  // LOI 13 : LES COUPS FRANCS
+  {
+    id: 79,
+    loi: "Loi 13 - Les coups francs",
+    question: "Combien de types de coups francs existent dans les Lois du Jeu ?",
+    options: ["1", "2 (direct et indirect)", "3", "4"],
+    correct: 1,
+    explication: "2 types : direct et indirect"
+  },
+  {
+    id: 80,
+    loi: "Loi 13 - Les coups francs",
+    question: "Un coup franc direct permet de :",
+    options: ["Passer obligatoirement par un coéquipier", "Tirer directement au but et marquer", "Tirer uniquement en arrière", "Reprendre par balle à terre"],
+    correct: 1,
+    explication: "Tirer directement au but et marquer"
+  },
+  {
+    id: 81,
+    loi: "Loi 13 - Les coups francs",
+    question: "Un coup franc indirect est signalé par :",
+    options: ["L'arbitre qui pointe vers le but", "L'arbitre qui lève le bras au-dessus de la tête", "L'arbitre qui fait signe avec le sifflet", "Rien de spécial"],
+    correct: 1,
+    explication: "L'arbitre qui lève le bras au-dessus de la tête"
+  },
+  {
+    id: 82,
+    loi: "Loi 13 - Les coups francs",
+    question: "Distance réglementaire de l'adversaire lors d'un coup franc ?",
+    options: ["7 m", "8 m", "9,15 m", "10 m"],
+    correct: 2,
+    explication: "9,15 m"
+  },
+  {
+    id: 83,
+    loi: "Loi 13 - Les coups francs",
+    question: "Un joueur exécute un coup franc et le rejoue immédiatement avant que quelqu'un d'autre ne le touche. Décision ?",
+    options: ["Rien", "Coup franc indirect pour l'adversaire", "Coup franc direct", "Balle à terre"],
+    correct: 1,
+    explication: "Coup franc indirect pour l'adversaire"
+  },
+  {
+    id: 84,
+    loi: "Loi 13 - Les coups francs",
+    question: "Un but peut-il être marqué directement contre son propre camp sur un coup franc ?",
+    options: ["Oui", "Non, ce sera corner pour l'adversaire"],
+    correct: 1,
+    explication: "Non, ce sera corner pour l'adversaire"
+  },
+  {
+    id: 85,
+    loi: "Loi 13 - Les coups francs",
+    question: "Un coup franc indirect est tiré directement dans le but adverse.",
+    options: ["But valable", "Coup de pied de coin", "Coup de but (renvoi de but)", "Balle à terre"],
+    correct: 2,
+    explication: "Coup de but (renvoi de but)"
+  },
+  {
+    id: 86,
+    loi: "Loi 13 - Les coups francs",
+    question: "Un coup franc direct est tiré dans le propre but.",
+    options: ["But valable", "Coup de pied de coin pour l'adversaire", "Coup de but", "Rejouer"],
+    correct: 1,
+    explication: "Coup de pied de coin pour l'adversaire"
+  },
+  {
+    id: 87,
+    loi: "Loi 13 - Les coups francs",
+    question: "Un attaquant se place à 0,5 m du mur défensif.",
+    options: ["Coup franc indirect pour la défense", "Coup franc direct pour la défense", "Rejouer", "Rien"],
+    correct: 0,
+    explication: "Coup franc indirect pour la défense"
+  },
+
+  // LOI 14 : LE COUP DE PIED DE RÉPARATION (PENALTY)
+  {
+    id: 88,
+    loi: "Loi 14 - Le coup de pied de réparation",
+    question: "Distance entre le point de penalty et la ligne de but :",
+    options: ["9 m", "10 m", "11 m", "12 m"],
+    correct: 2,
+    explication: "11 m"
+  },
+  {
+    id: 89,
+    loi: "Loi 14 - Le coup de pied de réparation",
+    question: "Au moment du tir, le ballon doit être :",
+    options: ["En mouvement", "Stationnaire sur le point de penalty", "Dans la surface de but", "Dans le rond central"],
+    correct: 1,
+    explication: "Stationnaire sur le point de penalty"
+  },
+  {
+    id: 90,
+    loi: "Loi 14 - Le coup de pied de réparation",
+    question: "Position du gardien au moment du tir :",
+    options: ["Les deux pieds sur la ligne", "Au moins un pied sur ou au-dessus de la ligne", "En avant de la ligne", "Derrière la ligne"],
+    correct: 1,
+    explication: "Au moins un pied sur ou au-dessus de la ligne"
+  },
+  {
+    id: 91,
+    loi: "Loi 14 - Le coup de pied de réparation",
+    question: "Si le tireur feinte après avoir terminé sa course d'élan :",
+    options: ["Autorisé", "Considéré comme faute → avertissement", "But valable"],
+    correct: 1,
+    explication: "Considéré comme faute → avertissement"
+  },
+  {
+    id: 92,
+    loi: "Loi 14 - Le coup de pied de réparation",
+    question: "Si le gardien sort trop tôt de sa ligne et arrête le tir :",
+    options: ["Rien", "Rejouer le penalty", "Corner", "Coup franc indirect"],
+    correct: 1,
+    explication: "Rejouer le penalty"
+  },
+
+  // LOI 15 : LA RENTRÉE DE TOUCHE
+  {
+    id: 93,
+    loi: "Loi 15 - La rentrée de touche",
+    question: "La rentrée de touche est effectuée par :",
+    options: ["L'équipe dont le joueur a touché le ballon en dernier", "L'équipe adverse au dernier joueur ayant touché le ballon"],
+    correct: 1,
+    explication: "L'équipe adverse au dernier joueur ayant touché le ballon"
+  },
+  {
+    id: 94,
+    loi: "Loi 15 - La rentrée de touche",
+    question: "Position correcte du joueur lors d'une touche :",
+    options: ["Les deux pieds sur la ligne ou derrière", "Un pied en l'air possible", "Tous les pieds dans le terrain"],
+    correct: 0,
+    explication: "Les deux pieds sur la ligne ou derrière"
+  },
+  {
+    id: 95,
+    loi: "Loi 15 - La rentrée de touche",
+    question: "Comment le ballon doit-il être lancé ?",
+    options: ["À une main", "À deux mains, par-dessus la tête", "Avec le pied"],
+    correct: 1,
+    explication: "À deux mains, par-dessus la tête"
+  },
+  {
+    id: 96,
+    loi: "Loi 15 - La rentrée de touche",
+    question: "Peut-on marquer directement un but sur une rentrée de touche ?",
+    options: ["Oui contre l'adversaire", "Non, si dans le but adverse → renvoi de but", "Oui contre son propre camp"],
+    correct: 1,
+    explication: "Non, si dans le but adverse → renvoi de but"
+  },
+  {
+    id: 97,
+    loi: "Loi 15 - La rentrée de touche",
+    question: "Si le ballon rentre directement dans son propre but sur une touche :",
+    options: ["But contre son camp", "Corner pour l'adversaire"],
+    correct: 1,
+    explication: "Corner pour l'adversaire"
+  },
+  {
+    id: 98,
+    loi: "Loi 15 - La rentrée de touche",
+    question: "Distance minimale des adversaires sur une touche :",
+    options: ["1 m", "2 m", "3 m"],
+    correct: 1,
+    explication: "2 m"
+  },
+  {
+    id: 99,
+    loi: "Loi 15 - La rentrée de touche",
+    question: "Une touche mal exécutée (pied levé, mauvais geste) entraîne :",
+    options: ["Touche rejouée", "Touche donnée à l'adversaire"],
+    correct: 1,
+    explication: "Touche donnée à l'adversaire"
+  },
+
+  // LOI 16 : LE COUP DE PIED DE BUT
+  {
+    id: 100,
+    loi: "Loi 16 - Le coup de pied de but",
+    question: "Quand accorde-t-on un coup de pied de but ?",
+    options: ["Quand le ballon franchit entièrement la ligne de but, dernière touche par un attaquant, sans but marqué", "Quand le gardien réclame", "Quand un défenseur dégage volontairement"],
+    correct: 0,
+    explication: "Quand le ballon franchit entièrement la ligne de but, dernière touche par un attaquant, sans but marqué"
+  },
+  {
+    id: 101,
+    loi: "Loi 16 - Le coup de pied de but",
+    question: "Le ballon est en jeu lors d'un coup de pied de but quand :",
+    options: ["Il franchit la ligne des 5,5 m", "Il sort de la surface de réparation", "Il est frappé et bouge clairement à l'intérieur de la surface"],
+    correct: 2,
+    explication: "Il est frappé et bouge clairement à l'intérieur de la surface"
+  },
+  {
+    id: 102,
+    loi: "Loi 16 - Le coup de pied de but",
+    question: "Qui peut exécuter un coup de pied de but ?",
+    options: ["Uniquement le gardien", "N'importe quel joueur de l'équipe en défense"],
+    correct: 1,
+    explication: "N'importe quel joueur de l'équipe en défense"
+  },
+  {
+    id: 103,
+    loi: "Loi 16 - Le coup de pied de but",
+    question: "Un but peut être marqué directement sur un coup de pied de but contre :",
+    options: ["L'adversaire", "Son propre camp (corner accordé)"],
+    correct: 0,
+    explication: "L'adversaire"
+  },
+  {
+    id: 104,
+    loi: "Loi 16 - Le coup de pied de but",
+    question: "Le ballon doit être placé :",
+    options: ["Dans la surface de réparation", "Sur le point de penalty", "N'importe où dans la surface de but (5,5 m)"],
+    correct: 2,
+    explication: "N'importe où dans la surface de but (5,5 m)"
+  },
+
+  // LOI 17 : LE COUP DE PIED DE COIN (CORNER)
+  {
+    id: 105,
+    loi: "Loi 17 - Le coup de pied de coin",
+    question: "Quand accorde-t-on un corner ?",
+    options: ["Quand le ballon sort totalement par la ligne de but, dernier touché par un défenseur, sans but marqué", "Quand le ballon sort par la ligne de touche", "Quand l'arbitre le décide"],
+    correct: 0,
+    explication: "Quand le ballon sort totalement par la ligne de but, dernier touché par un défenseur, sans but marqué"
+  },
+  {
+    id: 106,
+    loi: "Loi 17 - Le coup de pied de coin",
+    question: "Où doit être placé le ballon lors d'un corner ?",
+    options: ["Dans le quart de cercle de coin", "À 1 m du poteau de corner", "N'importe où sur la ligne de but"],
+    correct: 0,
+    explication: "Dans le quart de cercle de coin"
+  },
+  {
+    id: 107,
+    loi: "Loi 17 - Le coup de pied de coin",
+    question: "Un but peut être marqué directement sur corner ?",
+    options: ["Oui, contre l'adversaire", "Oui, contre son propre camp", "Non"],
+    correct: 0,
+    explication: "Oui, contre l'adversaire"
+  },
+  {
+    id: 108,
+    loi: "Loi 17 - Le coup de pied de coin",
+    question: "Si un corner est frappé directement dans son propre but :",
+    options: ["But contre son camp", "Corner à rejouer", "Renvoi de but"],
+    correct: 2,
+    explication: "Renvoi de but"
+  },
+  {
+    id: 109,
+    loi: "Loi 17 - Le coup de pied de coin",
+    question: "Distance minimale des adversaires lors d'un corner :",
+    options: ["5 m", "7 m", "9,15 m"],
+    correct: 2,
+    explication: "9,15 m"
+  },
+  {
+    id: 110,
+    loi: "Loi 17 - Le coup de pied de coin",
+    question: "Un joueur tire le corner et rejoue immédiatement avant qu'un autre n'ait touché. Décision ?",
+    options: ["Rien", "Coup franc indirect pour l'adversaire"],
+    correct: 1,
+    explication: "Coup franc indirect pour l'adversaire"
+  },
+
+  // QUESTIONS SUPPLÉMENTAIRES DE FAITS DE JEU ET SITUATIONS DIFFICILES
+  {
+    id: 111,
+    loi: "Faits de jeu - Terrain",
+    question: "Avant un match, on découvre que les filets d'un but sont troués. Que doit faire l'arbitre ?",
+    options: ["Annuler le match", "Demander réparation avant le coup d'envoi", "Ignorer si les deux équipes sont d'accord", "Reporter le match"],
+    correct: 1,
+    explication: "Demander réparation avant le coup d'envoi"
+  },
+  {
+    id: 112,
+    loi: "Faits de jeu - Terrain",
+    question: "Un joueur marque un but alors que le ballon est passé au-dessus de la barre transversale cassée qui s'est affaissée. Décision ?",
+    options: ["But accordé", "But refusé, reprise par balle à terre", "But refusé, renvoi de but", "But refusé, reprise au coup franc indirect"],
+    correct: 1,
+    explication: "But refusé, reprise par balle à terre"
+  },
+  {
+    id: 113,
+    loi: "Faits de jeu - Ballon",
+    question: "Le ballon éclate juste après avoir franchi la ligne de but. Décision ?",
+    options: ["But valable", "But refusé, balle à terre", "Corner", "Renvoi de but"],
+    correct: 0,
+    explication: "But valable (car ballon déjà entré en entier avant éclatement)"
+  },
+  {
+    id: 114,
+    loi: "Faits de jeu - Joueurs",
+    question: "Un joueur sort du terrain sans autorisation pour changer de chaussures. Décision ?",
+    options: ["Rien", "Avertissement", "Coup franc indirect", "Autoriser à revenir à la prochaine sortie"],
+    correct: 1,
+    explication: "Avertissement"
+  },
+  {
+    id: 115,
+    loi: "Faits de jeu - Joueurs",
+    question: "Pendant un corner, une équipe joue avec 12 joueurs. Un but est marqué. Décision ?",
+    options: ["But valable", "But refusé, coup franc direct à l'adversaire", "But refusé, balle à terre", "But valable si l'autre équipe n'a pas protesté"],
+    correct: 1,
+    explication: "But refusé, coup franc direct à l'adversaire"
+  },
+  {
+    id: 116,
+    loi: "Faits de jeu - Équipement",
+    question: "Un joueur entre avec une chaîne visible autour du cou. Décision ?",
+    options: ["Rien, on continue", "Lui demander de l'enlever avant de jouer", "Carton jaune immédiat", "Autoriser si couverte par scotch"],
+    correct: 1,
+    explication: "Lui demander de l'enlever avant de jouer"
+  },
+  {
+    id: 117,
+    loi: "Faits de jeu - Arbitre",
+    question: "Un arbitre donne un carton rouge mais sort par erreur un carton jaune. Que faire ?",
+    options: ["Rien, la première décision reste", "Il peut corriger si le jeu n'a pas repris", "Demander aux capitaines de choisir", "Reprendre par balle à terre"],
+    correct: 1,
+    explication: "Il peut corriger si le jeu n'a pas repris"
+  },
+  {
+    id: 118,
+    loi: "Faits de jeu - Durée",
+    question: "L'arbitre accorde 4 minutes d'arrêt de jeu. À la 94ᵉ+30 sec, l'équipe attaquante tire un corner. Décision ?",
+    options: ["Corner joué", "Match terminé avant exécution", "Corner joué uniquement si défense est d'accord", "Corner annulé"],
+    correct: 0,
+    explication: "Corner joué"
+  },
+  {
+    id: 119,
+    loi: "Faits de jeu - Coup d'envoi",
+    question: "Sur un coup d'envoi, le tireur joue directement une deuxième fois le ballon. Décision ?",
+    options: ["Rien", "Coup franc indirect contre lui", "Coup franc direct contre lui", "Balle à terre"],
+    correct: 1,
+    explication: "Coup franc indirect contre lui"
+  },
+  {
+    id: 120,
+    loi: "Faits de jeu - Coup d'envoi",
+    question: "Coup d'envoi : ballon frappé directement dans son propre but. Décision ?",
+    options: ["But valable", "Corner pour l'adversaire", "Coup franc indirect", "Balle à terre"],
+    correct: 1,
+    explication: "Corner pour l'adversaire"
+  }
+];
+
+// Fonction pour mélanger les questions
+function shuffleArray(array) {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
+// Fonction pour obtenir des questions par loi
+function getQuestionsByLoi(loiName) {
+  return questions.filter(q => q.loi.includes(loiName));
+}
+
+// Fonction pour obtenir un nombre spécifique de questions aléatoirement
+function getRandomQuestions(count = 20) {
+  const shuffled = shuffleArray(questions);
+  return shuffled.slice(0, count);
+}
+
+// Fonction pour obtenir toutes les lois disponibles
+function getAvailableLois() {
+  const lois = [...new Set(questions.map(q => q.loi))];
+  return lois.sort();
+}
+
+// Export pour utilisation
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    questions,
+    shuffleArray,
+    getQuestionsByLoi,
+    getRandomQuestions,
+    getAvailableLois
+  };
+}
