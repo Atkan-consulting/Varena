@@ -1,0 +1,4 @@
+*.log
+*.pid
+supervisord.conf
+web_server.py
